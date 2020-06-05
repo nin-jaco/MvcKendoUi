@@ -1,0 +1,315 @@
+﻿@{
+    ViewBag.ScreenDescription = "Edit Addresses for an organisation";
+    
+    var organisationID = ViewBag.OrganisationID;
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input data-bind="value: OrganisationAddressID" type="hidden" id="selectedOrgAddressID" />
+    <div id="gridOrgAddresses"></div>
+    <div id="errorMessage" class="alert-box alert round">There were no records found.</div>
+    <br />
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Address Details</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Address 1</label>
+                    <input data-bind="value: Address1" class="depth" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Address 2</label>
+                    <input data-bind="value: Address2" class="depth" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Address 3</label>
+                    <input data-bind="value: Address3" class="depth" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Address 4</label>
+                    <input data-bind="value: Address4" class="depth" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Suburb</label>
+                    <input id="cbOrganisationSuburb" data-bind="value: Suburb" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Town</label>
+                    <input id="cbOrganisationTown" data-bind="value: Town" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Postal Code</label>
+                    <input id="cbOrganisationPostalCode" data-bind="value: PostalCode" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label></label>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+    <div class="row">
+        <div class="twelve columns right">
+            <ul class="button-group even-4">
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="saveOrgAddresses()" value="Save" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="deleteOrgAddresses()" value="Delete" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="clearOrgAddresses()" value="Clear" style="width:130px" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    var selectedOrgAddress;
+    var organisationID = "@organisationID";
+
+    $(document).ready(function () {
+
+        $("#errorMessage").hide();
+
+        var orgCommListGrid = $("#gridOrgAddresses").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationComm")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            skip: options.skip,
+                            take: options.take,
+                            organisationID: organisationID
+                        }
+                    }
+                },
+                change: function (e) {
+                    var RecordCount = $("#gridOrgAddresses").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {
+                        $("#errorMessage").hide();
+                    }
+                    else {
+                        $("#errorMessage").show();
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                schema: { data: "Data", total: "Count" },
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            schema:
+            {
+                model:
+                {
+                    fields:
+                    {
+                        OrganisationCommID: { type: "number" },
+                        OrganisationCommTypeID: { type: "number" },
+                        OrganisationCommTypeName: { type: "string" },
+                        Address: { type: "string" },
+                        AddressPrefix: { type: "string" },
+                    }
+                }
+            },
+            autoBind: true,
+            columns: [
+                { field: 'OrganisationCommTypeName', title: 'Communication Type', width: 100 },
+                { field: 'Address', title: 'Address', width: 100 },
+                { field: 'AddressPrefix', title: 'Prefix', width: 100 }
+            ],
+            change: function (e) {
+                selectedOrgComm = this.dataItem(this.select());
+                kendo.bind($("#view"), selectedOrgComm);
+                $("#ddlOrganisationCommType").val(selectedOrgComm.OrganisationCommTypeID);
+            }
+        })
+
+        $("#cbOrganisationSuburb").kendoComboBox({
+            placeholder: "Select a suburb...",
+            dataTextField: "JurisdictionName",
+            dataValueField: "JurisdictionID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Jurisdictions/GetJurisdictionByType?sessionID=")",
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            parentorganisation: $("#ddlParentOrganisation").val(),
+                            sessionID: $("#sessionID").val(),
+                            jurisdictionType: $("#jurisdictionType").val(),
+                            jurisdictionValue: $("#jurisdictionValue").val(),
+                            pageSize: options.pageSize,
+                            page: options.page,
+                            skip: options.skip,
+                            take: options.take
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { JurisdictionName: "Select a suburb...", JurisdictionID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ JurisdictionName: "None...", JurisdictionID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#cbOrganisationTown").kendoComboBox({
+            placeholder: "Select a town...",
+            dataTextField: "JurisdictionName",
+            dataValueField: "JurisdictionID",
+            autoBind: false,
+            cascadeFrom: "cbOrganisationSuburb",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Jurisdictions/GetJurisdictionByType?sessionID=")",
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            parentorganisation: $("#ddlParentOrganisation").val(),
+                            sessionID: $("#sessionID").val(),
+                            jurisdictionType: $("#jurisdictionType").val(),
+                            jurisdictionValue: $("#jurisdictionValue").val(),
+                            pageSize: options.pageSize,
+                            page: options.page,
+                            skip: options.skip,
+                            take: options.take
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { JurisdictionName: "Select a town...", JurisdictionID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ JurisdictionName: "None...", JurisdictionID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#cbOrganisationPostalCode").kendoComboBox({
+            placeholder: "Select a postal code...",
+            dataTextField: "JurisdictionName",
+            dataValueField: "JurisdictionID",
+            autoBind: false,
+            cascadeFrom: "cbOrganisationTown",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Jurisdictions/GetJurisdictionByType")",
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            parentorganisation: $("#ddlParentOrganisation").val(),
+                            sessionID: $("#sessionID").val(),
+                            jurisdictionType: $("#jurisdictionType").val(),
+                            jurisdictionValue: $("#jurisdictionValue").val(),
+                            pageSize: options.pageSize,
+                            page: options.page,
+                            skip: options.skip,
+                            take: options.take
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { JurisdictionName: "Select a postal code...", JurisdictionID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ JurisdictionName: "None...", JurisdictionID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+    });
+
+    function saveOrgAddresses() {
+        var organisationCommID = selectedOrgComm.OrganisationCommID;
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAddresses/")";
+
+        var DTOOrgComm = { OrganisationCommID: selectedOrgComm.OrganisationCommID, OrganisationCommTypeID: selectedOrgComm.OrganisationCommTypeID, Address: selectedOrgComm.Address, AddressPrefix: selectedOrgComm.AddressPrefix };
+
+        $.ajax({
+            url: apiUrl,
+            type: 'PUT',
+            dataType: "application/json",
+            data: DTOOrgComm,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    $("#gridOrgAddresses").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+    function deleteOrgComm() {
+
+        var organisationCommID = selectedOrgComm.OrganisationCommID;
+
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationComm")/" + organisationCommID;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    $("#gridOrgAddresses").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+</script>

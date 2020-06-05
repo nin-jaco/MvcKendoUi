@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.ScreenDescription = "Organisation Departments";
+    
+    var organisationID = ViewBag.OrganisationID;
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input data-bind="value: DepartmentID" type="hidden" id="selectedDepartmentID" />
+    <div id="gridDepartments"></div>
+    <div class="row">
+        <div class="twelve columns">
+            <div id="errorMessage" class="alert-box alert round">There were no records found.</div>  
+        </div>
+    </div>
+    <br />
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Department Information</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Department Name</label>
+                    <input data-bind="value: DepartmentName" style="width:250px" class="depth" />
+                </div>
+                <div class="six columns">
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <div class="row">
+        <div class="twelve columns right">
+            <ul class="button-group even-4">
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="updateDepartment()" value="Save" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="deleteDepartment()" value="Delete" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="insertDepartment()" value="Insert" style="width:130px" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+
+        var selectedDepartment;
+        var organisationID = "@organisationID";
+
+    $(document).ready(function () {
+
+        $("#errorMessage").hide();
+
+        var gridDepartments = $("#gridDepartments").kendoGrid(
+        {
+
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Department")"
+                  },
+                  parameterMap: function (options, operation) {
+                      return {
+                          skip: options.skip,
+                          take: options.take,
+                          organisationID: organisationID
+                      }
+                  }
+              },
+                change: function (e) {
+                    var RecordCount = $("#gridDepartments").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {
+                        $("#errorMessage").hide();
+                    }
+                    else {
+                        $("#errorMessage").show();
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                schema: { data: "Data", total: "Count" },
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            schema:
+            {
+                model:
+                {
+                    fields:
+                    {
+                        DepartmentID: { type: "number" },
+                        DepartmentName: { type: "string" }
+                    }
+                }
+            },
+            autoBind: true,
+            columns: [
+                        { field: 'DepartmentName', title: 'Department Name', width: 100 }
+            ],
+            change: function (e) {
+                selectedDepartment = this.dataItem(this.select());
+                kendo.bind($("#view"), selectedDepartment);
+            }
+        });
+    });
+
+
+    function updateDepartment() {
+        var organisationCommID = selectedOrgComm.OrganisationCommID;
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/Department/")";
+
+      // Cannot directly use selectedUser - something about the Roles collections breaks the serializing/deserializing between JQuery/JSON/WebAPI
+      var DTOOrgComm = { OrganisationCommID: selectedOrgComm.OrganisationCommID, OrganisationCommTypeID: selectedOrgComm.OrganisationCommTypeID, Address: selectedOrgComm.Address, AddressPrefix: selectedOrgComm.AddressPrefix };
+
+      $.ajax({
+          url: apiUrl,
+          type: 'PUT',
+          dataType: "application/json",
+          data: DTOOrgComm,
+          cache: false,
+          statusCode: {
+              200: function (data) {
+                  // delete successful, lets refresh the grid.
+                  $("#gridDepartments").data("kendoGrid").dataSource.read();
+              }, // Successful DELETE
+              404: function (data) {
+                  alert(apiUrl + " ... Not Found(404)");
+              }, // 404 Not Found
+              400: function (data) {
+                  alert("Error in webpage. (Bad Request 400)");
+              } // 400 Bad Request
+          } // statusCode
+      }); // ajax call  
+  };
+
+  function insertDepartment() {
+      var organisationCommID = selectedOrgComm.OrganisationCommID;
+      var apiUrl = "/api/Department/";
+
+      var DTOOrgComm = { DepartmentID: selectedDepartment.DepartmentID, DepartmentName: selectedDepartment.DepartmentName };
+
+      $.ajax({
+          url: apiUrl,
+          type: 'PUT',
+          dataType: "application/json",
+          data: DTOOrgComm,
+          cache: false,
+          statusCode: {
+              200: function (data) {
+                  // delete successful, lets refresh the grid.
+                  $("#gridDepartments").data("kendoGrid").dataSource.read();
+              }, // Successful DELETE
+              404: function (data) {
+                  alert(apiUrl + " ... Not Found(404)");
+              }, // 404 Not Found
+              400: function (data) {
+                  alert("Error in webpage. (Bad Request 400)");
+              } // 400 Bad Request
+          } // statusCode
+      }); // ajax call  
+  };
+
+  function deleteDepartment() {
+
+      var organisationCommID = selectedOrgComm.OrganisationCommID;
+
+      var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/Department")/" + organisationCommID;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    $("#gridDepartments").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+</script>
+

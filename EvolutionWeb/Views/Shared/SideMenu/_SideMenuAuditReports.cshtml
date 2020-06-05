@@ -1,0 +1,22 @@
+﻿@{
+    //var testA = EvolutionWeb.Code.GlobalUtilities.IsCurrent("Maintain Users", ViewBag.CurrentScreen);
+    //var CurrentController = ControllerContext.ParentActionViewContext.RouteData.Values["action"];
+
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    var CurrentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    CurrentAction = string.Format("{0}/{1}", CurrentController, CurrentAction);
+}
+
+
+<div class="section-container accordion" data-section="accordion">
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("AuditReports", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Audit Reports</a></p>
+        <div class="content" data-section-content="">
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/SearchByOrganisation", CurrentAction)">@Html.ActionLink("Search by Organisation", "SearchByOrganisation", "Administration")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/SearchByEmployee", CurrentAction)">@Html.ActionLink("Search by Employee", "SearchByEmployee", "Administration")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/SearchByMachine", CurrentAction)">@Html.ActionLink("Search by Machine", "SearchByMachine", "Administration")</li>
+            </ul>
+        </div>
+    </section>
+</div>

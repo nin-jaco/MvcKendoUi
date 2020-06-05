@@ -1,0 +1,917 @@
+﻿@{
+    ViewBag.ScreenDescription = "Edit Organisation";
+
+    var OrganisationID = ViewBag.OrganisationID;
+
+    var blnAdd = false;
+    EvolutionRepository.Models.Organisation organisation = new EvolutionRepository.Models.Organisation();
+    if (OrganisationID > 0)
+    {
+        //Editing;
+        //organisation = EvolutionBusinessLogic.Organisations.OrganisationLogic.GetOrganisation(OrganisationID);
+    }
+    else
+    {
+        blnAdd = true;
+        //Creating;
+    }
+
+    var chkRadioButton = "";
+
+    if (string.IsNullOrEmpty(organisation.Longitude.ToString()))
+    {
+        if (string.IsNullOrEmpty(organisation.Longitude.ToString()))
+        {
+            chkRadioButton = "Decimal";
+        }
+        else
+        {
+            chkRadioButton = "DMS";
+        }
+
+    }
+    else
+    {
+        chkRadioButton = "Decimal";
+    }
+
+    var chkVATRadioButton = "";
+
+    if (string.IsNullOrEmpty(organisation.Longitude.ToString()))
+    {
+        chkVATRadioButton = "No";
+    }
+    else
+    {
+        chkVATRadioButton = "Yes";
+    }
+
+    var isRouteOperator = "";
+
+    if (!string.IsNullOrEmpty(organisation.Longitude.ToString()))
+    {
+        if (organisation.Longitude > 0)
+        {
+            isRouteOperator = "true";
+        }
+        else
+        {
+            isRouteOperator = "false";
+        }
+
+    }
+    else
+    {
+        isRouteOperator = "false";
+    }
+
+    string RouteOperator = organisation.ParentID.ToString();
+    string ServiceProvider = organisation.ParentID.ToString();
+    string Manufacturer = organisation.ParentID.ToString();
+    string Supplier = organisation.ParentID.ToString();
+}
+
+
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input type="hidden" id="RouteOperator" name="RouteOperator" value="@RouteOperator" />
+    <input type="hidden" id="ServiceProvider" name="ServiceProvider" value="@ServiceProvider" />
+    <input type="hidden" id="Manufacturer" name="Manufacturer" value="@Manufacturer" />
+    <input type="hidden" id="Supplier" name="Supplier" value="@Supplier" />
+    <input type="hidden" id="chkradiobutton" name="chkradiobutton" value="@chkRadioButton" >
+    <input type="hidden" id="chkvatradiobutton" name="chkvatradiobutton" value="@chkVATRadioButton" >
+    <input type="hidden" id="isrouteoperator" name="isrouteoperator" value="@isRouteOperator" >
+
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Organisation Details</h3>
+            <input value="@organisation.OrganisationID" type="hidden" id="selectedOrgID" />
+            <div class="row">
+                <div class="six columns">
+                    <label>Organisation Name</label>
+                    <input id="txtOrgName" name="txtOrgName" value="@organisation.OrganisationName" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Parent Organisation</label>
+                    <input id="ddlParentID" name="ddlParentID" value="@organisation.ParentID" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Jurisdiction</label>
+                    <input id="ddlJurisdictionID" name="ddlJurisdictionID" value="@organisation.JurisdictionID" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Company Registration No.</label>
+                    <input id="txtRegistrationNo" name="txtRegistrationNo" value="@organisation.CompanyNumber" style="width:250px" class="depth"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>District</label>
+                    <input id="ddlDistrict" name="ddlDistrict" value="@organisation.CompanyNumber" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Maximum Machines</label>
+                    <input id="numMaximumMachines" name="numMaximumMachines" value="@organisation.MaximumMachines" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Type</label>
+                    <input id="ddlOrgType" name="ddlOrgType" value="@organisation.OrganisationTypeID" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Assigned Area</label>
+                    <input id="ddlAssignedArea" name="ddlAssignedArea" value="@organisation.OrganisationTypeID" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Sub Type</label>
+                    <input id="ddlOrgSubType" name="ddlOrgSubType" value="@organisation.OrganisationSubTypeID" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Site Status</label>
+                    <input id="ddlOrganisationStatusID" name="ddlOrganisationStatusID" value="@organisation.OrganisationStatusID" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>VAT Vendor</label>
+                    <input class="float-left" type="radio" name="radio-vatchoice" id="radio-vatchoice-1" value="choice-1" />Yes &nbsp; &nbsp;
+                    <input class="float-left" type="radio" name="radio-vatchoice" id="radio-vatchoice-2" value="choice-2" />No
+                </div>
+                <div class="six columns">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Registration No.</label>
+                    <input id="txtVATVendor" name="txtVATVendor" value="@organisation.TaxNumber" style="width:250px" class="depth"/>
+                </div>
+                <div class="six columns">
+                    <label>Tax number</label>
+                    <input id="txtTaxNumber" name="txtTaxNumber" value="@organisation.TaxNumber" placeholder="000000" style="width:250px" class="depth"/>
+                </div>
+            </div>
+        </div>
+        
+
+    </article>
+
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Contact Details</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Contact Person</label>
+                <input id="txtContactName" name="txtContactName" value="@organisation.ContactName" style="width:250px" class="depth"/>
+                </div>
+                <div class="six columns">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Email</label>
+                    <input id="txtEmailAddress" name="txtEmailAddress" value="@organisation.EmailAddress"  style="width:250px" class="depth" placeholder="someone@evolution.com"/>
+                </div>
+                <div class="six columns">
+                    <label>Web Site Address</label>
+                    <input id="txtWebSiteURL" name="txtWebSiteURL" value="@organisation.WebSiteURL"  style="width:250px" class="depth"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Telephone No.</label>
+                    <input id="txtTelephoneCode" name="txtTelephoneCode" value="@organisation.TelephoneCode" style="width:40px" placeholder="011" class="depth"/>
+                    <input id="txtTelephoneNumber" name="txtTelephoneNumber" value="@organisation.TelephoneNumber" style="width:145px" placeholder="1234123" class="depth"/>
+                </div>
+                <div class="six columns">
+                    <label>Facsimilie No.</label>
+                    <input id="txtFaxCode" name="txtFaxCode" value="@organisation.FaxCode" style="width:40px" placeholder="011" class="depth"/>
+                    <input id="txtFaxNumber" name="txtFaxNumber" value="@organisation.FaxNumber" style="width:145px" placeholder="1234123" class="depth"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>GPS Co-ordinates</label>
+                    <input class="float-left" type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />Decimal&nbsp; &nbsp;
+                    <input class="float-left" type="radio" name="radio-choice" id="radio-choice-2" value="choice-2" />DMS
+                </div>
+                <div class="six columns">
+                    <label></label>
+                </div>
+            </div>
+            <div id="Decimal" class="row">
+                <div class="six columns">
+                    <label>Longitude (S)</label>
+                    <input id="txtLongitude" name="txtLongitude" value="@organisation.Longitude" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Latitude (E)</label>
+                    <input id="txtLatitude" name="txtLatitude" value="@organisation.Latitude" class="depth" style="width:250px" />
+                </div>
+            </div>
+            <div class="row" id="DMS">
+                <div class="six columns">
+                    <label>Longitude (S)</label>
+                    <input id="txtLongD" name="txtLongD" value="@organisation.Longitude" style="width:48px" class="depth"/>
+                    <input id="txtLongM" name="txtLongM" value="@organisation.Longitude" style="width:48px" class="depth"/>
+                    <input id="txtLongS" name="txtLongS" value="@organisation.Longitude" style="width:48px" class="depth"/>
+                </div>
+                <div class="six columns">
+                    <label>Latitude (E)</label>
+                    <input id="txtLatD" name="txtLatD" value="@organisation.Latitude" style="width:48px" class="depth"/>
+                    <input id="txtLatM" name="txtLatM" value="@organisation.Latitude" style="width:48px" class="depth"/>
+                    <input id="txtLatS" name="txtLatS" value="@organisation.Latitude" style="width:48px" class="depth"/>
+                </div>
+            </div>
+        </div>
+    </article>  
+
+    <article id="Roles" class="blog_post">
+        <div class="twelve columns">
+            <h3>Roles</h3>
+            <div class="row">
+                <div class="three columns">
+                    <label>Route Operator</label>
+                    <input type="checkbox" id="checkRouteOperator" name="checkRouteOperator" value="@organisation.ContactName">
+                </div>
+                <div class="three columns">
+                    <label>Service Provider</label>
+                    <input type="checkbox" id="checkServiceProvider" name="checkServiceProvider" value="@organisation.ContactName"/>
+                </div>
+                <div class="three columns">
+                    <label>Manufacturer</label>
+                    <input type="checkbox" id="checkManufacturer" name="checkManufacturer" value="@organisation.ContactName"/>
+                </div>
+                <div class="three columns">
+                    <label>Supplier</label>
+                    <input type="checkbox" id="checkSupplier" name="checkSupplier" value="@organisation.ContactName"/>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <div class="row">
+        <div class="twelve columns right">
+            <ul class="button-group even-4">
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="updateOrg()" value="Save" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="deleteOrg()" value="Delete" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="clearOrgScreen()" value="Clear" style="width:130px" />
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="twelve columns">
+            <div class="alert-box alert round small-4 large-12 columns" id="divMsg"></div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    var selectedOrg;
+    var blnAdd;
+
+    $(document).ready(function () {
+        $("#divMsg").hide();
+        blnAdd = "@blnAdd";
+        blnAdd = blnAdd.toLowerCase();
+        $("#ddlJurisdictionID").kendoDropDownList({
+            placeholder: "Select a jurisdiction...",
+            dataTextField: "JurisdictionName",
+            dataValueField: "JurisdictionID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgJurisdiction/1")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { JurisdictionName: "Select a jurisdiction...", JurisdictionID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ JurisdictionName: "None...", JurisdictionID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#ddlDistrict").kendoDropDownList({
+            placeholder: "Select a district...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")"
+                    }
+                },
+                requestEnd: function (e) {
+                    e.response.splice(0, 1, { OrganisationTypeName: "Select a district...", OrganisationTypeID: 0 });
+                }
+            })
+        });
+
+        $("#ddlOrgType").kendoDropDownList({
+            placeholder: "Select an organisation type...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")"
+                        @*url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")?companyKey=@usrCompany.CompanyKey&onlyactive=everyone"*@
+                    }
+                },
+                requestEnd: function (e) {
+                    e.response.splice(0, 1, { OrganisationTypeName: "Select an organisation type...", OrganisationTypeID: 0 });
+                }
+            })
+        });
+
+        $("#ddlOrgSubType").kendoDropDownList({
+            placeholder: "Select a sub-type...",
+            dataTextField: "OrganisationSubTypeName",
+            dataValueField: "OrganisationSubTypeID",
+            autoBind: false,
+            cascadeFrom: "ddlOrgType",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgSubtypes/1")"
+                    },
+                    //parameterMap: function (options, operation) {
+                    //    return {
+                    //        organisationtypeid: options.filter.filters[0].value //$("#ddlOrgType").val() 
+                    //    }
+                    //}
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationSubTypeName: "Select a sub-type...", OrganisationSubTypeID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationSubTypeName: "None...", OrganisationSubTypeID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#ddlAssignedArea").kendoDropDownList({
+            placeholder: "Select an asigned area...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")"
+                        @*url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")?companyKey=@usrCompany.CompanyKey&onlyactive=everyone"*@
+                    }
+                },
+                requestEnd: function (e) {
+                    e.response.splice(0, 1, { OrganisationTypeName: "Select an asigned area...", OrganisationTypeID: 0 });
+                }
+            })
+        });
+        
+
+        $("#ddlParentID").kendoDropDownList({
+            placeholder: "Select an organisation...",
+            dataTextField: "OrganisationName",
+            dataValueField: "OrganisationID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgParent/1")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationName: "Select an organisation...", OrganisationID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationName: "None...", OrganisationID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#numMaximumMachines").kendoNumericTextBox();
+
+        $("#ddlOrganisationStatusID").kendoDropDownList({
+            placeholder: "Select a status...",
+            dataTextField: "OrganisationStatusName",
+            dataValueField: "OrganisationStatusID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrganisationStatuses/1")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationStatusName: "Select a status...", OrganisationStatusID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationStatusName: "None...", OrganisationStatusID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+    }); //document.ready
+
+    if ($("#RouteOperator").val() == "on") {
+        $("#RouteOperator").val("on");
+        $('input[name=checkRouteOperator]').prop('checked', true);
+    }
+    else {
+        $("#RouteOperator").val("off");
+        $('input[name=checkRouteOperator]').prop('checked', false);
+    }
+
+    if ($("#ServiceProvider").val() == "on") {
+        $("#ServiceProvider").val("on");
+        $('input[name=checkServiceProvider]').prop('checked', true);
+    }
+    else {
+        $("#ServiceProvider").val("off");
+        $('input[name=checkServiceProvider]').prop('checked', false);
+    }
+
+    if ($("#Manufacturer").val() == "on") {
+        $("#Manufacturer").val("on");
+        $('input[name=checkManufacturer]').prop('checked', true);
+    }
+    else {
+        $("#Manufacturer").val("off");
+        $('input[name=checkManufacturer]').prop('checked', false);
+    }
+
+    if ($("#Supplier").val() == "on") {
+        $("#Supplier").val("on");
+        $('input[name=checkSupplier]').prop('checked', true);
+    }
+    else {
+        $("#Supplier").val("off");
+        $('input[name=checkSupplier]').prop('checked', false);
+    }
+        
+    $('#checkRouteOperator').change(function () {
+        if ($('#checkRouteOperator').is(':checked')) {
+            $("#RouteOperator").val("on");
+        }
+        else {
+            $("#RouteOperator").val("off");
+        }
+    })
+
+    $('#checkServiceProvider').change(function () {
+        if ($('#checkServiceProvider').is(':checked')) {
+            $("#ServiceProvider").val("on");
+        }
+        else {
+            $("#ServiceProvider").val("off");
+        }
+    })
+
+    $('#checkManufacturer').change(function () {
+        if ($('#checkManufacturer').is(':checked')) {
+            $("#Manufacturer").val("on");
+        }
+        else {
+            $("#Manufacturer").val("off");
+        }
+    })
+
+    $('#checkSupplier').change(function () {
+        if ($('#checkSupplier').is(':checked')) {
+            $("#Supplier").val("on");
+        }
+        else {
+            $("#Supplier").val("off");
+        }
+    })
+
+    if ($("#isrouteoperator").val() == 'true') {
+        $("#Roles").show();
+    }
+    else {
+        $("#Roles").hide();
+    }
+
+    if ($("#chkvatradiobutton").val() == "Yes") {
+        $("#radio-vatchoice-1").trigger("click");
+
+        $("#txtVATVendor").removeAttr("disabled");
+    }
+    else {
+        $("#radio-vatchoice-2").trigger("click");
+
+        $("#txtVATVendor").attr("disabled", "disabled");
+    }
+
+    $(function () {
+        $('input[name="radio-vatchoice"]').change(function () {
+            var typeofCampaign = $(this).next('label').text();
+
+            if (typeofCampaign == "Yes") {
+                $("#txtVATVendor").removeAttr("disabled");
+            }
+            else {
+                $("#txtVATVendor").attr("disabled", "disabled");
+            }
+        })
+    });
+
+    if ($("#chkradiobutton").val() == "Decimal") {
+        $("#radio-choice-1").trigger("click");
+
+        $("#Decimal").show();
+        $("#DMS").hide();
+    }
+    else {
+        $("#radio-choice-2").trigger("click");
+
+        $("#Decimal").hide();
+        $("#DMS").show()
+    }
+
+    $(function () {
+        $('input[name="radio-choice"]').change(function () {
+            var typeofCampaign = $(this).next('label').text();
+
+            if (typeofCampaign == "Decimal") {
+                $("#Decimal").show();
+                $("#DMS").hide();
+            }
+            else {
+                $("#Decimal").hide();
+                $("#DMS").show();
+            }
+        })
+    });
+
+    (function LoadOrgStatuses() {
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetOrganisationStatuses/1")"; //+ "/GetOrgTypes"; ///GetOrgTypes";
+        //debugger;
+        $.get(apiUrl, "", function (data, textStatus, jqXHR) {
+            var orgtypes = eval(data);
+            //debugger;
+            //var options = $("#OrgType");
+            for (var v in orgtypes) //data)
+            {
+                $("#OrganisationStatusID").append("<option value=\"" + orgtypes[v].OrganisationStatusID + "\">" + orgtypes[v].OrganisationStatusName + "</option>");
+            }
+            //$("#OrgType").val("2");
+            // alert(OrgType.value);
+        });
+    })();
+    
+    (function LoadJurisdictions() {
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetOrgJurisdiction/1")"; //+ "/GetOrgTypes"; ///GetOrgTypes";
+        //debugger;
+        $.get(apiUrl, "", function (data, textStatus, jqXHR) {
+            var orgtypes = eval(data);
+           // debugger;
+            //var options = $("#OrgType");
+            for (var v in orgtypes) //data)
+            {
+                $("#JurisdictionID").append("<option value=\"" + orgtypes[v].JurisdictionID + "\">" + orgtypes[v].JurisdictionName + "</option>");
+            }
+            //$("#OrgType").val("2");
+            // alert(OrgType.value);
+        });
+    })();
+    
+    //LoadOrgTypes();
+    (function LoadOrgTypes() {
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetOrgTypes/1")"; //+ "/GetOrgTypes"; ///GetOrgTypes";
+        //debugger;
+        $.get(apiUrl, "", function (data, textStatus, jqXHR) {
+            var orgtypes = eval(data);
+          //  debugger;
+            //var options = $("#OrgType");
+            for (var v in orgtypes) //data)
+            {
+                $("#OrgType").append("<option value=\"" + orgtypes[v].OrganisationTypeID + "\">" + orgtypes[v].OrganisationTypeName + "</option>");
+            }
+            //$("#OrgType").val("2");
+            // alert(OrgType.value);
+        });
+    })();
+
+    (function LoadOrgSubTypes() {
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetOrgSubtypes/1")";
+
+        $.get(apiUrl, "", function (data, textStatus, jqXHR) {
+            var orgtypes = eval(data);
+            //debugger;
+            for (var v in orgtypes) //data)
+            {
+                $("#OrgSubType").append("<option value=\"" + orgtypes[v].OrganisationSubTypeID + "\">" + orgtypes[v].OrganisationSubTypeName + "</option>");
+            }
+        });
+    })();
+
+
+    function updateOrg() {
+        //if (blnAdd == false && (selectedOrg == null || selectedOrg == undefined)) {
+        //    return;
+        //}
+       
+        // Cannot directly use selectedUser - something about the Roles collections breaks the serializing/deserializing between JQuery/JSON/WebAPI
+        /*var vContactPerson = blnAdd ? ContactPerson.value: selectedOrg.ContactPerson;      
+        var vJurisdiction = blnAdd ? Jurisdiction.value : selectedOrg.Jurisdiction;
+        var vDistrict = blnAdd ? District.value : selectedOrg.District;
+        var vParentOrganisation = blnAdd ? ParentOrganisation.value : selectedOrg.ParentOrganisation;        
+        var vMaximumMachines = blnAdd ? MaximumMachines.value : selectedOrg.MaximumMachines;
+        var vAssignedArea = blnAdd ? AssignedArea.value : selectedOrg.AssignedArea;
+        var vVATVendor = blnAdd ? VATVendor.value : selectedOrg.VATVendor;
+        var vPhysicalAddressStreet1 = blnAdd ? PhysicalAddressStreet1.value : selectedOrg.PhysicalAddressStreet1;
+        var vPhysicalAddressStreet2 = blnAdd ? PhysicalAddressStreet2.value : selectedOrg.PhysicalAddressStreet2;
+        var vPhysicalAddressSurburb = blnAdd ? PhysicalAddressSurburb.value : selectedOrg.PhysicalAddressSurburb;
+        var vPhysicalAddressCity = blnAdd ? PhysicalAddressCity.value : selectedOrg.PhysicalAddressCity;
+        var vPhysicalAddressProvince = blnAdd ? PhysicalAddressProvince.value : selectedOrg.PhysicalAddressProvince;
+        var vPhysicalAddressPostalCode = blnAdd ? PhysicalAddressPostalCode.value : selectedOrg.PhysicalAddressPostalCode;
+        var vPostalAddressStreet1 = blnAdd ? PostalAddressStreet1.value : selectedOrg.PostalAddressStreet1;
+        var vPostalAddressStreet2 = blnAdd ? PostalAddressStreet2.value : selectedOrg.PostalAddressStreet2;
+        var vPostalAddressSurburb = blnAdd ? PostalAddressSurburb.value : selectedOrg.PostalAddressSurburb;
+        var vPostalAddressCity = blnAdd ? PostalAddressCity.value : selectedOrg.PostalAddressCity;
+        var vPostalAddressProvince = blnAdd ? PostalAddressProvince.value : selectedOrg.PostalAddressProvince;
+        var vPostalAddressPostalCode = blnAdd ? PostalAddressPostalCode.value : selectedOrg.PostalAddressPostalCode;
+        var vGPSCoordinates = blnAdd ? GPSCoordinates.value : selectedOrg.GPSCoordinates;
+        var vSiteStatus = blnAdd ? SiteStatus.value : selectedOrg.SiteStatus;
+        var vAccountManager = blnAdd ? AccountManager.value: selectedOrg.AccountManager;
+        var vCollector = blnAdd ? Collector.value : selectedOrg.Collector;
+        var vSiteManager = blnAdd ? SiteManager.value: selectedOrg.SiteManager;
+        var vDefaultSplit = blnAdd ? DefaultSplit.value : selectedOrg.DefaultSplit;
+        var vSignedBy = blnAdd ? SignedBy.value : selectedOrg.SignedBy;
+        var vSignedByDate = blnAdd ? SignedByDate.value: selectedOrg.SignedByDate;
+        var vCashCollection = blnAdd ? CashCollection.value: selectedOrg.CashCollection;
+        var vLiquorLicenseNo = blnAdd ? LiquorLicenseNo.value: selectedOrg.LiquorLicenseNo;
+        var vBusinessLicenseNo =blnAdd ? BusinessLicenseNo.value : selectedOrg.BusinessLicenseNo;
+        var vClassification = blnAdd ? Classification.value : selectedOrg.Classification;
+        var vPDI = blnAdd ? PDI.value : selectedOrg.PDI;
+        var vPLAInvestigator = blnAdd ? PLAInvestigator.value: selectedOrg.PLAInvestigator;
+        var vPLAInspector = blnAdd ? PLAInspector.value : selectedOrg.PLAInspector;*/
+
+        //debugger;
+
+        $("#divMsg").html("");
+        $("#divMsg").show();
+        if (txtRegistrationNo.value == "") {
+            $("#divMsg").html("Specify registration number please");
+            return;
+        }
+
+        if (txtOrgName.value == "") {
+            $("#divMsg").html("Specify organisation name please");
+            return;
+        }
+
+        if (txtTaxNumber.value == "") {
+            $("#divMsg").html("Specify tax number please");
+            return;
+        }
+
+        if (numMaximumMachines.value == "") {
+            $("#divMsg").html("Specify maximum machines please");
+            return;
+        }
+
+        if (txtTelephoneCode.value == "") {
+            $("#divMsg").html("Specify telephone code please");
+            return;
+        }
+
+        if (txtTelephoneNumber.value == "") {
+            $("#divMsg").html("Specify telephone number please");
+            return;
+        }
+
+        if (txtFaxCode.value == "") {
+            $("#divMsg").html("Specify Fax Code please");
+            return;
+        }
+        if (txtFaxNumber.value == "") {
+            $("#divMsg").html("Specify Fax Number please");
+            return;
+        }
+
+        if (txtContactName.value == "") {
+            $("#divMsg").html("Specify Contact Name please");
+            return;
+        }
+
+        if (txtEmailAddress.value == "") {
+            $("#divMsg").html("Specify Email Address please");
+            return;
+        }
+
+        if (txtWebSiteURL.value == "") {
+            $("#divMsg").html("Specify Web Site URL please");
+            return;
+        }
+
+        if (txtLongitude.value == "") {
+            $("#divMsg").html("Specify Longitude please");
+            return;
+        }
+
+        if (txtLatitude.value == "") {
+            $("#divMsg").html("Specify Latitude please");
+            return;
+        }
+                      
+        $("#divMsg").hide();
+
+
+        //var orgID = "@blnAdd" == true ? 0 : "@OrganisationID"; // selectedOrg.OrganisationID;
+        var orgID = blnAdd == "true" ? 0 : "@OrganisationID";
+        //debugger;
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrganisation/1")";
+        //debugger;
+        var vID = orgID; //blnAdd ? 0: orgID;
+        var vOrgType = ddlOrgType.value; // : selectedOrg.OrganisationTypeID;txtOrgName
+        var vOrgSubType = ddlOrgSubType.value //: selectedOrg.OrganisationSubTypeID;
+        var vRegistrationNo = txtRegistrationNo.value //: selectedOrg.CompanyNumber;
+        var vOrgName = txtOrgName.value; // : selectedOrg.OrganisationName;
+        var vTaxNumber = txtTaxNumber.value; // : selectedOrg.TaxNumber;
+        var vParentID = ddlParentID.value; // : selectedOrg.ParentID;
+        var vMaximumMachines = numMaximumMachines.value; // : selectedOrg.MaximumMachines;
+        var vJurisdictionID = ddlJurisdictionID.value; // : selectedOrg.JurisdictionID;
+        var vTelephoneCode = txtTelephoneCode.value; // : selectedOrg.TelephoneCode;
+        var vTelephoneNumber = txtTelephoneNumber.value; // : selectedOrg.TelephoneNumber;
+        var vFaxCode = txtFaxCode.value; // : selectedOrg.FaxCode;
+        var vFaxNumber = txtFaxNumber.value; // : selectedOrg.FaxNumber;
+        var vContactName = txtContactName.value; // : selectedOrg.ContactName;
+        var vEmailAddress = txtEmailAddress.value; // : selectedOrg.EmailAddress;
+        var vWebSiteURL = txtWebSiteURL.value; // : selectedOrg.WebSiteURL;
+        var vLongitude = txtLongitude.value; // : selectedOrg.Longitude;
+        var vLatitude = txtLatitude.value; // : selectedOrg.Latitude;
+        var vOrganisationStatusID = ddlOrganisationStatusID.value;//: selectedOrg.OrganisationStatusID;
+
+        //var DTOrg = { ID: vID, OrgName: vOrgName, ContactPerson: vContactPerson, OrgType: vOrgType, OrgSubType: vOrgSubType, Jurisdiction: vJurisdiction, District: vDistrict, ParentOrganisation: vParentOrganisation, RegistrationNo: vRegistrationNo, MaximumMachines: vMaximumMachines, AssignedArea: vAssignedArea, VATVendor: vVATVendor, PhysicalAddressStreet1: vPhysicalAddressStreet1, PhysicalAddressStreet2: vPhysicalAddressStreet2, PhysicalAddressSurburb: vPhysicalAddressSurburb, PhysicalAddressCity: vPhysicalAddressCity, PhysicalAddressProvince: vPhysicalAddressProvince, PhysicalAddressPostalCode: vPhysicalAddressPostalCode, PostalAddressStreet1: vPostalAddressStreet1, PostalAddressStreet2: vPostalAddressStreet2, PostalAddressSurburb: vPostalAddressSurburb, PostalAddressCity: vPostalAddressCity, PostalAddressProvince: vPostalAddressProvince, PostalAddressPostalCode: vPostalAddressPostalCode, GPSCoordinates: vGPSCoordinates, SiteStatus: vSiteStatus, AccountManager: vAccountManager, Collector: vCollector, SiteManager: vSiteManager, DefaultSplit: vDefaultSplit, SignedBy: vSignedBy, SignedByDate: vSignedByDate, CashCollection: vCashCollection, LiquorLicenseNo: vLiquorLicenseNo, BusinessLicenseNo: vBusinessLicenseNo, Classification: vClassification, PDI: vPDI, PLAInvestigator: vPLAInvestigator, PLAInspector: vPLAInspector };
+        var DTOrg = { OrganisationID: vID, OrganisationName: vOrgName, CompanyNumber: vRegistrationNo, TaxNumber: vTaxNumber, OrganisationTypeID: vOrgType, OrganisationSubTypeID: vOrgSubType, ParentID: vParentID, MaximumMachines: vMaximumMachines, JurisdictionID: vJurisdictionID, TelephoneCode: vTelephoneCode, TelephoneNumber: vTelephoneNumber, FaxCode: vFaxCode, FaxNumber: vFaxNumber, ContactName: vContactName, EmailAddress: vEmailAddress, WebSiteURL: vWebSiteURL, Longitude: vLongitude, Latitude: vLatitude, OrganisationStatusID:vOrganisationStatusID };
+        if (blnAdd=="true") { //add
+            $.ajax({
+                url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrganisation/1")",
+                type: 'POST',
+                dataType: "application/json",
+                data: DTOrg,
+                cache: false,
+                statusCode: {
+                    200: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html("Saved successfully");
+                        // delete successful, lets refresh the grid.
+                        //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                    }, // Successful DELETE
+                    404: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                        //alert(apiUrl + " ... Not Found(404)");
+                    }, // 404 Not Found
+                    400: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                        //alert("Error in webpage. (Bad Request 400)");
+                    } // 400 Bad Request
+                } // statusCode
+            }); // ajax call  
+        }
+        else { //edit            
+            $.ajax({
+                url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PutOrganisation/1")",  
+                type: 'PUT',
+                dataType: "application/json",
+                data: DTOrg,
+                cache: false,
+                statusCode: {
+                    200: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html("Saved successfully");
+                        // delete successful, lets refresh the grid.
+                        //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                    }, // Successful DELETE
+                    404: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                        //alert(apiUrl + " ... Not Found(404)");
+                    }, // 404 Not Found
+                    400: function (data) {
+                        clearOrgScreen();
+                        $("#divMsg").show();
+                        $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                        //alert("Error in webpage. (Bad Request 400)");
+                    } // 400 Bad Request
+                } // statusCode
+            }); // ajax call  
+        }
+     
+    };  //updateOrg
+
+    function deleteOrg() {
+        //if (selectedOrg == null || selectedOrg == undefined) {
+        //    return;
+        //}
+
+        var OrgID = selectedOrgID.value; // selectedOrg.OrganisationID;
+
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/DeleteOrganisation")/" + OrgID;
+        debugger;
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                    clearOrgScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Deleted successfully");
+                }, // Successful DELETE
+                404: function (data) {
+                    //alert(apiUrl + " ... Not Found(404)");
+                    clearOrgScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    //alert("Error in webpage. (Bad Request 400)");
+                    clearOrgScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+    function clearOrgScreen() {
+        blnAdd = "true";
+        $("#divMsg").hide();
+        $("#OrgType").val("");
+        $("#OrgSubType").val("");
+        $("#RegistrationNo").val("");
+        $("#OrgName").val("");
+        $("#TaxNumber").val("");
+        $("#ParentID").val("");
+        $("#MaximumMachines").val("");
+        $("#JurisdictionID").val("");
+        $("#TelephoneCode").val("");
+        $("#TelephoneNumber").val("");
+        $("#FaxCode").val("");
+        $("#FaxNumber").val("");
+        $("#ContactName").val("");
+        $("#EmailAddress").val("");
+        $("#WebSiteURL").val("");
+        $("#Longitude").val("");
+        $("#Latitude").val("");
+        $("#OrganisationStatusID").val("");
+    };
+
+</script>

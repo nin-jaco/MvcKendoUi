@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using EvolutionRepository.Models;
+
+namespace EvolutionDataAccess
+{
+    public class PersonDAL
+    {
+        public class GetPersonListResult
+        {
+            public List<EvolutionRepository.Models.User> data; // must contain only the record on the current page (apply the skip and take)
+            public int count; // Must contain the TOTAL number of records that the user can page through
+        }
+
+        public static GetPersonListResult GetAllPeople(int skip, int take)
+        {
+
+            using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+            {
+                ctx.Configuration.ProxyCreationEnabled = false;
+
+                var Result = new GetPersonListResult();
+                Result.count = ctx.Users.Count();
+
+                //Result.data = ctx.Users.Include("Roles").OrderBy(x => x.UserID).Skip(skip).Take(take).ToList();
+                return Result;
+            }
+
+        }
+
+        public static EvolutionRepository.Models.User GetPersonByID(int PersonID)
+        {
+
+            using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+            {
+                ctx.Configuration.ProxyCreationEnabled = false;
+                //var TheUser = ctx.Users.FirstOrDefault(x => x.UserID == PersonID);
+
+                //return TheUser;
+                return null;
+            }
+
+        }
+
+        //public static bool UpdatePerson(EvolutionRepository.Models.User UpdatedUser)
+        //{
+        //    var Result = false;
+
+        //    try
+        //    {
+        //        using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+        //        {
+
+        //            var DBUser = ctx.Users.FirstOrDefault(x => x.UserID == UpdatedUser.UserID);
+
+        //            DBUser.UserName = UpdatedUser.UserName;
+        //            DBUser.Mobile = UpdatedUser.Mobile;
+        //            //DBUser.Roles = UpdatedUser.Roles;
+
+        //            ctx.SaveChanges();
+
+        //            Result = true;
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        Result = false;
+        //    }
+
+        //    return Result;
+        //}
+    }
+}

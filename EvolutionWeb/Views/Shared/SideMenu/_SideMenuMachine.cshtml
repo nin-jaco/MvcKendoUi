@@ -1,0 +1,18 @@
+﻿@{
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    var CurrentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    CurrentAction = string.Format("{0}/{1}", CurrentController, CurrentAction);
+}
+
+<div class="section-container accordion" data-section="accordion">
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Machine", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Machine</a></p>
+        <div class="content" data-section-content="">
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Machine/CreateInventory", CurrentAction)">@Html.ActionLink("Create Inventory Model", "CreateInventory", "Machine")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Machine/CreateCertified", CurrentAction)">@Html.ActionLink("Create Certified Model", "CreateCertified", "Machine")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Machine/CreateNew", CurrentAction)">@Html.ActionLink("Create New Machine", "CreateNew", "Machine")</li>
+            </ul>
+        </div>
+    </section>
+</div>

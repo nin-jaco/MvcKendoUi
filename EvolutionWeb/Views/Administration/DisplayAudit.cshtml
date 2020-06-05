@@ -1,0 +1,173 @@
+﻿@model IRSRepository.Models.Identity
+@{
+    Layout = "~/Views/Maintenance/_CustomLayout.cshtml";
+
+    ViewBag.Title = "IRS";
+    ViewBag.PageTitle = "Display Audits";    
+
+    var AuditTypes = IRSWeb.Models.AuditTypeHolder.GetListOfAuditTypes(Model);
+
+    List<IRSRepository.ManualModels.AuditsSimple> auditAttHolders = new List<IRSRepository.ManualModels.AuditsSimple>();
+    var AuditTypeName = "";
+    var FirstRecord = true;
+    var Rendered = false;
+}
+
+@*<div class="float-right"><a href="javascript:Print()"><img src="@Url.Content("~/Content/images/printer.png")" alt="Print this Page" style="border:none; height:30px;width:30px;" /></a></div>*@
+<br />
+<br />
+<div id="print_content">
+
+    <br />
+
+    <fieldset class="AttributeComplexField">
+
+        <legend></legend>
+        
+        @*<div class="float-right"><a onclick="javascript:PrintPage(this)"><img id="PrintId" src="/IRSWeb/Content/images/printer.png" alt="Print this Page" style="border:none; height:30px;width:30px;" /></a></div>*@
+@*        <div class="float-right"><a onclick="javascript:PrintPage(this)"><img id="PrintId" src="@Url.Content("~/Content/images/printer.png")" alt="Print this Page" style="border:none; height:30px;width:30px;" /></a></div>*@
+        <script src="@Url.Content("~/Content/_EngagementActions.js")"></script>
+        @*<h1 style="text-align:center">IRS Audit Report</h1>*@
+        <div class="content-wrapper">
+            <div class="float-left">
+                <img src="@Url.Content("~/Content/IRSIconSmall.jpg")" />
+            </div>
+            <div class="site-title">
+                <h1 style="text-align:center">IRS Audit Report</h1>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <script>
+    function PrintPage()
+    {
+        this.print();
+    }
+
+    function showPrint()
+    {
+        //$("#PrintId").show();
+        var elem = document.getElementById('PrintId');
+        elem.style.display = 'block';
+    }
+    </script>
+
+    @Html.Partial("_IdentitySummary", Model)
+
+    @foreach (var audType in AuditTypes)
+    {
+        if ((ViewBag.EngagementInstanceKey == Guid.Empty) ||
+            (ViewBag.EngagementInstanceKey != Guid.Empty && audType.EngagementInstanceKey == ViewBag.EngagementInstanceKey))
+        {
+            <fieldset class="AttributeComplexField">
+                <legend>Engagement</legend>
+
+                <div class="AttributeField">
+                    <div class="AttributeDisplayTitle">Start Date:</div>
+                    <div class="AttributeValue">@IRSBusinessLogic.Utilities.BasicUtils.FormatDate(Convert.ToDateTime(audType.StartDate))</div>
+                </div>
+                <div class="AttributeField">
+                    <div class="AttributeDisplayTitle">End Date:</div>
+                    <div class="AttributeValue">@IRSBusinessLogic.Utilities.BasicUtils.FormatDate(Convert.ToDateTime(audType.EndDate))</div>
+                </div>
+
+                <div class="AttributeField">
+                    <div class="AttributeDisplayTitle">Job Category:</div>
+                    <div class="AttributeValue">@audType.JobCategory</div>
+                </div>
+
+                <div class="AttributeField">
+                    <div class="AttributeDisplayTitle">Registration Type:</div>
+                    <div class="AttributeValue">@audType.RegistrationType</div>
+                </div>
+
+                <div class="AttributeField">
+                    <div class="AttributeDisplayTitle">Generation:</div>
+                    <div class="AttributeValue">@audType.Generation</div>
+                </div>
+        
+                <br />
+                <br />
+
+                @foreach (var aud in audType.ListOfAudits.OrderBy(x => x.DateOfChange).ThenBy(x => x.AuditID).ToList())
+                {
+            
+                    if (FirstRecord == false)
+                    {
+                        if (aud.AuditTypeName != AuditTypeName)
+                        {
+                            Html.RenderAction("RenderAuditAttributeViewer", "Maintenance", new { AuditAttHolders = auditAttHolders });
+                            auditAttHolders.Clear();
+                            Rendered = true;
+                        }
+                        else
+                        {
+                            Rendered = false;
+                        }
+                    }
+
+                    auditAttHolders.Add(aud);
+                    AuditTypeName = aud.AuditTypeName;   
+                    FirstRecord = false;
+            
+                }   
+
+                @*if (FirstRecord == false && Rendered == false)*@
+                @if (FirstRecord == false)
+                {
+                    Html.RenderAction("RenderAuditAttributeViewer", "Maintenance", new { AuditAttHolders = auditAttHolders });
+                }
+
+                @if (FirstRecord == false)
+                {
+                    FirstRecord = true;
+                }
+
+                        
+            </fieldset>
+        }
+    }
+</div>
+
+<fieldset class="AttributeComplexField">
+    <legend>Audit Report:</legend>
+
+    @*Action Bar*@
+    <div style="margin-top: 10px; margin-bottom: 10px;">
+
+        <a class="button float-left" href="@Url.Content("~/Maintenance/SearchAudits")" style="width: 100px">Back</a>
+
+    </div>
+</fieldset>
+
+<br />
+<br />
+
+<script>
+
+    $("#PrintId").hide();
+
+    function Print()
+    {
+        //var disp_setting = "toolbar=yes,location=no,directories=yes,menubar=yes,";
+        //disp_setting += "scrollbars=yes,width=1000, height=600, left=100, top=25";
+        var disp_setting = "scrollbars=yes,width=1350, height=600, left=100, top=25";
+
+        var mywindow = window.open('', '', disp_setting);
+        mywindow.document.write('<html><head><title>IRS Audit Report</title>');
+        //mywindow.document.write('<link rel="stylesheet" href="/IRSWeb/Content/Site.css" type="text/css" />');
+        mywindow.document.write('<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />');
+        //mywindow.document.write('</head><body onLoad="self.print()">');
+        //mywindow.document.write('</head><body">');
+        mywindow.document.write('</head><body onLoad="showPrint()">');
+        mywindow.document.write($('#print_content').html());
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close();
+        mywindow.focus();
+        //mywindow.print();
+        //mywindow.close();
+    }
+
+</script>

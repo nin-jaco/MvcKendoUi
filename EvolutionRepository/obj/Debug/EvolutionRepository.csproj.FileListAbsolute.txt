@@ -1,0 +1,8 @@
+C:\Code\Managed\Evolution\EvolutionRepository\bin\Debug\EvolutionRepository.dll.config
+C:\Code\Managed\Evolution\EvolutionRepository\bin\Debug\EvolutionRepository.dll
+C:\Code\Managed\Evolution\EvolutionRepository\bin\Debug\EvolutionRepository.pdb
+C:\Code\Managed\Evolution\EvolutionRepository\bin\Debug\EntityFramework.dll
+C:\Code\Managed\Evolution\EvolutionRepository\bin\Debug\EntityFramework.xml
+C:\Code\Managed\Evolution\EvolutionRepository\obj\Debug\EvolutionRepository.dll
+C:\Code\Managed\Evolution\EvolutionRepository\obj\Debug\EvolutionRepository.pdb
+C:\Code\Managed\Evolution\EvolutionRepository\obj\Debug\EvolutionRepository.csprojResolveAssemblyReference.cache

@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.ScreenDescription = "Welcome to Evolution CEMS - please make your selection";
+}
+
+<div id="container">
+
+    <!-- photo -->
+    <div class='box photo col2'>
+        <a href="#">
+            <img src='~/Images/organizationThumb.png' alt="desc" /></a>
+        <h4 style="text-align: center"><strong>Organisations</strong></h4>
+        <p><small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel ligula vel felis pretium gravida...</small></p>
+        <p style="text-align: center"><a href="#" class="button small radius">Details &raquo;</a></p>
+    </div>
+
+    <!-- photo -->
+    <div class='box photo col2'>
+        <a href="#">
+            <img src='~/Images/employeeThumb.png' alt="desc" /></a>
+        <h4 style="text-align: center"><strong>Employees</strong></h4>
+        <p><small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel ligula vel felis pretium gravida...</small></p>
+        <p style="text-align: center"><a href="#" class="button small radius">Details &raquo;</a></p>
+    </div>
+
+    <!-- photo -->
+    <div class='box photo col2'>
+        <a href="#">
+            <img src='~/Images/machineThumb.png' alt="desc" /></a>
+        <h4 style="text-align: center"><strong>Machines</strong></h4>
+        <p><small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel ligula vel felis pretium gravida...</small></p>
+        <p style="text-align: center"><a href="#" class="button small radius">Details &raquo;</a></p>
+    </div>
+
+    <!-- photo -->
+    <div class='box photo col2'>
+        <a href="#">
+            <img src='~/Images/adminThumb.png' alt="desc" /></a>
+        <h4 style="text-align: center"><strong>System Admin</strong></h4>
+        <p><small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel ligula vel felis pretium gravida...</small></p>
+        <p style="text-align: center"><a href="#" class="button small radius">Details &raquo;</a></p>
+    </div>
+
+</div>
+
+<script src="~/Content/masonry.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    $(function () {
+        var $container = $('#container');
+        $container.imagesLoaded(function () {
+            $container.masonry({
+                itemSelector: '.box',
+                isFitWidth: true,
+                isAnimated: true
+            });
+        });
+    });
+    //]]>
+</script>

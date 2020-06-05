@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+}
+@section HtmlHead{
+    @Html.Partial("HeadScripts")
+}
+
+<h2>
+    Create Role</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Role</legend>
+        <div class="editor-label">
+            @Html.Label("Role", "Role")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("Role", new { @class="depth" })
+            @Html.ValidationMessage("Role")
+        </div>
+        <p>
+            <input type="submit" value="Save" class="modern" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Roles")
+</div>

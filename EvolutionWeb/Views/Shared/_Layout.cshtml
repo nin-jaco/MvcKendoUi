@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+    <link href="@Url.Content("~/Content/foundation/normalize.css")" rel="stylesheet" type="text/css" />
+    
+
+    <link href="@Url.Content("~/Content/kendo/2013.1.514/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2013.1.514/kendo.uniform.min.css")" rel="stylesheet" type="text/css" />
+    
+
+    <link href="@Url.Content("~/Content/foundation.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/ligature.css")" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Playfair+Display:400italic' rel='stylesheet' type='text/css' />
+
+
+    <script src="@Url.Content("~/Scripts/kendo/2013.1.514/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.maskedinput.min.js")"></script>
+    @*DataViz moved above kendo web include to prevent breaking Paging in Grids!*@
+    @*<script src="@Url.Content("~/Scripts/kendo/2013.1.514/kendo.dataviz.min.js")"></script>*@
+    <script src="@Url.Content("~/Scripts/kendo/2013.1.514/kendo.web.min.js")"></script>
+
+    <!-- Moment - a script to provide date functions in Javascript http://momentjs.com/docs/ -->
+    <script src="@Url.Content("~/Content/moment.min.js")"></script>
+
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+    <!--[if !IE 7]>
+	    <style type="text/css">
+		    #wrap {display:table;height:100%}
+	    </style>
+    <![endif]-->
+</head>
+<body>
+    <div id="wrap">
+        <nav>
+            <div class="twelve columns header_nav">
+                <div class="row">
+                    <ul id="menu-header" class="nav-bar horizontal">
+                        @*<li class="active"><a href="index.html">Login</a></li>*@
+                        <li><a href="~/Home/Index">Home</a></li>
+                        <li><a href="~/Organisation/SearchOrganisation">Organisations</a></li>
+                        <li><a href="~/Employee/SearchEmployee">Employees</a></li>
+                        <li><a href="Index">Machines</a></li>
+                        <li><a href="Index">System Admin</a></li>
+                        <li><a href="Index">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header>
+              <h2 class="welcome_text">@ViewBag.ScreenDescription</h2>    
+        </header>
+
+        <section class="section_light">
+            <div class="row">@RenderBody()</div>
+        </section>
+
+        <footer>
+            <div class="row">
+                <div class="twelfe columns footer">
+                    <div class="large-1 columns">
+                        <a class="th radius" href="http://www.routegaming.co.za/" target="_blank"><img src="~/Images/RGS_small.png" style="float: left" /></a>
+                    </div>
+                    <div class="large-5 columns">
+                        <p style="vertical-align: middle; margin-top: 15px">&copy; Route Gaming, 2013, All rights reserved</p>
+                    </div>
+                    <div class="large-6 columns">
+                        <p style="margin-top: 15px">Release 0.01</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+        
+
+    @*Because we use Kendo, we cannot use Zepto.*@
+    @*<script src="@Url.Content("~/Scripts/foundation/vendor/zepto.js")"></script>  *@
+
+    <script src="@Url.Content("~/Scripts/foundation/foundation")/foundation.js"></script>
+    <script src="@Url.Content("~/Scripts/foundation/foundation")/foundation.topbar.js"></script>
+    <script src="@Url.Content("~/Scripts/foundation/foundation")/foundation.joyride.js"></script>
+    <script src="@Url.Content("~/Scripts/foundation/foundation")/foundation.section.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $(document).foundation(); // Initialize Foundation. Make sure all used Foundation javascript files are used.
+        });
+
+    </script>
+
+
+</body>
+</html>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#ddlOperatingOrganisation").kendoDropDownList({
+            placeholder: "Select an organisation...",
+            dataTextField: "OrganisationName",
+            dataValueField: "OrganisationID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgParent/1")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationName: "Select an organisation...", OrganisationID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationName: "None...", OrganisationID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        var sessionID = "@ViewBag.sessionID";
+        if ((sessionID) && (sessionID != "") && $("#mainMenu ul li").length == 0) {
+            BuildMenu(sessionID);
+        }
+    });
+
+    function BuildMenu(sessionID) {
+        $.ajax({
+            url: "@VirtualPathUtility.ToAbsolute("~/api/Menu/GetMenu?sessionID=")" + sessionID,
+            type: "GET",
+            cache: false,
+            success: function (response) {
+                $("#menu-header li").first().remove();
+                $("#menu-header").append(response);
+                $("#menu-header").append("<li class=''><a href='#'>Logout</a></li>");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#menu-header").append("<li>" + errorThrown + "</li>");
+            }
+        });
+    }
+
+</script>

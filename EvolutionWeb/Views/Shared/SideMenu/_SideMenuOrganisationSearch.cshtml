@@ -1,0 +1,32 @@
+﻿@{
+    //var testA = EvolutionWeb.Code.GlobalUtilities.IsCurrent("Maintain Users", ViewBag.CurrentScreen);
+    //var CurrentController = ControllerContext.ParentActionViewContext.RouteData.Values["action"];
+
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    var CurrentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    CurrentAction = string.Format("{0}/{1}", CurrentController, CurrentAction);
+}
+
+<h5>Organisation Actions</h5>
+<ul class="nav-bar vertical">
+
+    <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/SearchOrganisation", CurrentAction)">@Html.ActionLink("Search", "SearchOrganisation", "Organisation")</li>
+    <li class="divider"></li>
+    <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/Organisations", CurrentAction)">@Html.ActionLink("Create", "Organisations/0", "Organisation")</li>
+    <li class="divider"></li>
+
+</ul>
+
+@*<div class="section-container accordion" data-section="accordion">
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Organisation Action</a></p>
+        <div class="content" data-section-content="">
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/SearchOrganisation", CurrentAction)">@Html.ActionLink("Search", "SearchOrganisation", "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/Organisations", CurrentAction)">@Html.ActionLink("Create", "Organisations/0", "Organisation")</li>
+                <li class="divider"></li>
+            </ul>
+        </div>
+    </section>
+</div>*@

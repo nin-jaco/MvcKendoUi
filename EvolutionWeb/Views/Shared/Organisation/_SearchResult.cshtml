@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Evolution - " + ViewBag.ScreenDescription;
+}
+
+<h3>Search Results</h3>
+<div class="row">
+    <div class="six columns">
+        <label>Rows per page</label>
+        <input id="pageSizes" name="pageSizes" value="10" style="width: 250px; margin-bottom: 3px; margin-left:5px;" />
+    </div>
+    <div class="six columns">
+        <div id="msgNothingFound" class="float-right" style="width: 180px; margin-bottom: 3px; COLOR: red;"><strong>No organisation found...</strong></div>
+        <div id="msgSearching" class="float-right" style="width: 180px; margin-bottom: 3px; COLOR: red;"><strong>Searching...</strong></div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="twelve columns">
+        <div id="gridSearchResults" style="margin-top:20px;"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#msgSearching").hide();
+    $("#msgNothingFound").hide();
+
+    $(document).ready(function () {
+
+        var pageSizes = [
+            { pSize: "3", pSizeTitle: "3 rows" },
+            { pSize: "10", pSizeTitle: "10 rows" },
+            { pSize: "20", pSizeTitle: "20 rows" },
+            { pSize: "30", pSizeTitle: "30 rows" },
+            { pSize: "50", pSizeTitle: "50 rows" },
+            { pSize: "80", pSizeTitle: "80 rows" },
+            { pSize: "100", pSizeTitle: "100 rows" },
+            { pSize: "200", pSizeTitle: "200 rows" },
+            { pSize: "300", pSizeTitle: "300 rows" },
+            { pSize: "500", pSizeTitle: "500 rows" }];
+
+        $("#pageSizes").kendoDropDownList({
+            placeholder: "Select a value...",
+            autoBind: true,
+            dataTextField: "pSizeTitle",
+            dataValueField: "pSize",
+            dataSource: pageSizes,
+            change: function (e) {
+                var pageSize = $("#pageSizes").val();
+                var searchGrid = $("#gridSearchResults").data("kendoGrid");
+                searchGrid.dataSource.pageSize(pageSize);
+                $("#msgSearching").show();
+                $("#msgNothingFound").hide();
+                searchGrid.refresh();
+            }
+        });
+
+        var gridSearchResults = $("#gridSearchResults").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/SearchOrganisations")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            parentorganisation: $("#ddlParentOrganisation").val(),
+                            organisation: $("#txtOrganisation").val(),
+                            childto: $("#ddlChildTo").val(),
+                            type: $("#ddlType").val(),
+                            subtype: $("#ddlSubType").val(),
+                            jurisdiction: $("#ddlJurisdiction").val(),
+                            pageSize: options.pageSize,
+                            page: options.page,
+                            skip: options.skip,
+                            take: options.take
+                        }
+                    }
+                },
+                change: function (e) {
+                    //debugger;
+                    var RecordCount = $("#gridSearchResults").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {                        
+                        $("#msgSearching").hide();
+                        $("#msgNothingFound").hide();
+                    }
+                    else {
+                        $("#msgSearching").hide();
+                        $("#msgNothingFound").show();
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Count",
+                    model: {
+                        fields: {
+                            OrganisationID: { type: "number" },
+                            OrganisationName: { type: "string" },
+                            CompanyNumber: { type: "string" },
+                            TelephoneNo: { type: "string" },
+                            ContactName: { type: "string" },
+                            WebSiteURL: { type: "string" },
+                            DateAdded: { type: "date" },
+                            DateDeleted: { type: "date" },
+                            OrganisationStatusName: { type: "string" },
+                        }
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            autoBind: false,
+            columns: [
+                        { field: 'Edit', title: 'Edit', width: 60, template: "<a href='@VirtualPathUtility.ToAbsolute("~/Organisation/Organisations")/#=OrganisationID#'>Edit</a>" },
+                        { field: 'OrganisationName', title: 'Organisation', width: 350 },
+                        { field: 'CompanyNumber', title: 'Company No', width: 180, hidden: true },
+                        { field: 'TelephoneNo', title: 'Telephone', width: 130 },
+                        { field: 'ContactName', title: 'Contact', width: 250 },
+                        { field: 'WebSiteURL', title: 'Website', width: 200, hidden: true },
+                        { field: 'DateAdded', title: 'Date Added', width: 120, type: 'date', format: "{0:yyyy-MM-dd}", hidden: true },
+                        { field: 'DateDeleted', title: 'Date Deleted', width: 120, type: 'date', format: "{0:yyyy-MM-dd}", hidden: true },
+                        { field: 'OrganisationStatusName', title: 'Status', width: 200, hidden: true },
+            ],
+
+        });
+
+        var grid = $("#gridSearchResults").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertBefore(grid.element.children(".k-grid-header")); //if scrolling is enabled
+        //var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertBefore(grid.element.children("table")); //if scrolling is not enabled
+        grid.pagerTop = new kendo.ui.Pager(wrapper, $.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+    });
+
+</script>

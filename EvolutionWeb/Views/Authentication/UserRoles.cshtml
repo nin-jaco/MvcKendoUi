@@ -1,0 +1,46 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Evolution";
+}
+@section HtmlHead{
+    @Html.Partial("HeadScripts")
+    <link href="@Url.Content("~/Content/css/redmond/ui.multiselect.css")" rel="stylesheet" type="text/css"  />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-multiselect.js")"></script>
+}
+<h2>
+    Roles for: @ViewBag.Username</h2>
+@if (Model != null && Model.Count() > 0)
+{
+    using (Html.BeginForm())
+    {
+        <select id="userroles" name="userroles" multiple="multiple" class="multiselect" style="width: 460px; height: 200px;">
+            @foreach (string role in Model){
+                if (Roles.IsUserInRole(ViewBag.Username, role)) {
+                <option value="@role" selected="selected">@role</option>
+                } else {
+                <option value="@role">@role</option>
+                }
+            }
+        </select>
+    
+        <p>
+            <input type="submit" name="name" value=" Save " id="savebutton" class="modern" />
+        </p>
+    }
+    <script type="text/javascript">
+        $(function () {
+            // or disable some features
+            $(".multiselect").multiselect({ sortable: false, searchable: false });
+        });
+    </script>
+}
+else
+{
+    <h3>
+        No roles configured, so they can't be assigned. Click @Html.ActionLink("here", "Roles") to add roles.</h3>
+}
+
+<p>
+    @Html.ActionLink("Back to list", "Index") |
+    @Html.ActionLink("Edit", "Edit", new { id = ViewBag.Username })
+</p>

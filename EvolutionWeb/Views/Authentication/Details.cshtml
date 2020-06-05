@@ -1,0 +1,81 @@
+﻿@model SimpleAccountManager.Core.Entity.User
+@{
+    ViewBag.Title = "Evolution";
+}
+@section HtmlHead{
+    @Html.Partial("HeadScripts")
+}
+
+<h2>
+    User details</h2>
+<fieldset>
+    <legend>User</legend>
+
+    <div class="display-label">
+        Username</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Username)
+    </div>
+
+    <div class="display-label">
+        Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+        Comment</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comment)
+    </div>
+    
+    <div class="display-label">
+        The user is approved</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsApproved)
+    </div>
+    <div class="display-label">
+        User is locked out currently</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsLockedOut)
+    </div>
+    <div class="display-label">
+        User is now online</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsOnline)
+    </div>
+
+    <div class="display-label">
+        Creation date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+    
+    <div class="display-label">
+        Last login</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastLoginDate)
+    </div>
+
+    <div class="display-label">
+        Last activity time</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastActivityDate)
+    </div>
+
+    <div class="display-label">
+        Last time locked out</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastLockoutDate)
+    </div>
+    
+    <div class="display-label">
+        LastPasswordChangedDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastPasswordChangedDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Username }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

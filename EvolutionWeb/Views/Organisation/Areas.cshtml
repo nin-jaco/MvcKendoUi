@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.ScreenDescription = "Organisation Areas";
+    
+    var organisationID = ViewBag.OrganisationID;
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input data-bind="value: AreaID" type="hidden" id="selectedAreaID" />
+    <div id="gridAreas"></div>
+    <div class="row">
+        <div class="twelve columns">
+            <div id="errorMessage" class="alert-box alert round">There were no records found.</div>  
+        </div>
+    </div>
+    <br />
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Area Information</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Area Name</label>
+                    <input data-bind="value: AreaName" id="AreaName" style="width:250px" class="depth" />
+                </div>
+                <div class="six columns">
+                    <label>Manager</label>
+                    <input data-bind="value: EmployeeID" id="ddlManager" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Telephone</label>
+                    <input data-bind="value: Telephone" id="Telephone" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Emergency Telephone</label>
+                    <input data-bind="value: EmergencyNumber" id="EmergencyTelephone" class="depth" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Mobile Number</label>
+                    <input data-bind="value: Mobile" id="Mobile" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <div class="row">
+        <div class="twelve columns right">
+            <ul class="button-group even-4">
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="updateArea()" value="Save" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="deleteArea()" value="Delete" style="width:130px" />
+                </li>
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="insertArea()" value="Create" style="width:130px" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    var selectedArea;
+    var organisationID = "@organisationID";
+
+    
+
+    $(document).ready(function () {
+
+        $("#errorMessage").hide();
+
+        var gridAreas = $("#gridAreas").kendoGrid(
+        {
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Area")"
+                  },
+                  parameterMap: function (options, operation) {
+                      return {
+                          skip: options.skip,
+                          take: options.take,
+                          organisationID: organisationID
+                      }
+                  }
+              },
+              change: function (e) {
+                  var RecordCount = $("#gridAreas").data("kendoGrid").dataSource.total();
+                  if (RecordCount > 0) {
+                      $("#errorMessage").hide();
+                  }
+                  else {
+                      $("#errorMessage").show();
+                  }
+              },
+              pageSize: 10,
+              serverPaging: true,
+              schema: { data: "Data", total: "Count" },
+          },
+          sortable: true,
+          pageable: true,
+          selectable: "row",
+          schema:
+          {
+              model:
+              {
+                  fields:
+                  {
+                      AreaID: { type: "number" },
+                      AreaName: { type: "string" },
+                      Telephone: { type: "string" },
+                      EmergencyNumber: { type: "string" },
+                      Mobile: { type: "string"},
+                      EmployeeID: { type: "number" },
+                      EmployeeFullname: { type: "string" }
+                  }
+              }
+          },
+          autoBind: true,
+          columns: [
+                      { field: 'AreaName', title: 'Area Name', width: 100 },
+                      { field: 'EmployeeFullname', title: 'Manager', width: 100 }
+          ],
+          change: function (e) {
+              selectedArea = this.dataItem(this.select());
+              kendo.bind($("#view"), selectedArea);
+              $("#ddlManager").val(selectedArea.EmployeeID);
+          }
+        });
+        
+        $("#ddlManager").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "FirstName",
+            dataValueField: "EmployeeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Area/GetManagersForAnOrganisation/" + organisationID)"
+                    }
+                },
+                requestEnd: function (e) {
+                    e.response.splice(0, 1, { FirstName: "Select a Manager...", EmployeeID: 0 });
+                }
+            })
+        });
+    });
+
+</script>

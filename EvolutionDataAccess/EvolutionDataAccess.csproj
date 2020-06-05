@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D523FF4A-E497-4B55-985F-81B3CB26C10B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EvolutionDataAccess</RootNamespace>
+    <AssemblyName>EvolutionDataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Account\RoleDAL.cs" />
+    <Compile Include="Account\UserDAL.cs" />
+    <Compile Include="Audit\AuditDAL.cs" />
+    <Compile Include="Employee\EmployeeDAL.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="ExpressionBuilder.cs" />
+    <Compile Include="LookupData\OrganisationTypesDAL.cs" />
+    <Compile Include="LookupData\JurisdictionsDAL.cs" />
+    <Compile Include="Organisation\AreaDAL.cs" />
+    <Compile Include="Organisation\DeductionTypeDAL.cs" />
+    <Compile Include="Organisation\DepartmentDAL.cs" />
+    <Compile Include="Organisation\OrganisationCommDAL.cs" />
+    <Compile Include="Organisation\OrganisationCommTypeDAL.cs" />
+    <Compile Include="Organisation\OrganisationDAL.cs" />
+    <Compile Include="Organisation\SplitDAL.cs" />
+    <Compile Include="OrgTree\OrgTreeDAL.cs" />
+    <Compile Include="Resources\ResourcesDAL.cs" />
+    <Compile Include="Search\SearchDAL.cs" />
+    <Compile Include="UserSession\UserSessionDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EvolutionRepository\EvolutionRepository.csproj">
+      <Project>{b5f5b081-63fc-47d6-a861-42d75b367b4b}</Project>
+      <Name>EvolutionRepository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBScripts\Evo_Areas_SP.sql" />
+    <Content Include="DBScripts\Evo_Audit_SP.sql" />
+    <Content Include="DBScripts\Evo_Departments_SP.sql" />
+    <Content Include="DBScripts\Evo_OrganisationComms_SP.sql" />
+    <Content Include="DBScripts\Scripts20131016.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

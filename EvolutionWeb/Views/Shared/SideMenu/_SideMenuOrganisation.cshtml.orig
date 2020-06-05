@@ -1,0 +1,53 @@
+﻿@{
+    //var testA = EvolutionWeb.Code.GlobalUtilities.IsCurrent("Maintain Users", ViewBag.CurrentScreen);
+    //var CurrentController = ControllerContext.ParentActionViewContext.RouteData.Values["action"];
+
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    var CurrentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    CurrentAction = string.Format("{0}/{1}", CurrentController, CurrentAction);
+    var OrganisationID = 1;
+}
+
+<div class="section-container accordion" data-section="accordion">
+    <section>
+        <p class="title" data-section-title=""><a href="#">Organisation</a></p>
+        <div class="content" data-section-content="">
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/SearchOrganisation", CurrentAction)">@Html.ActionLink("Search", "SearchOrganisation", "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation/CreateOrEdit", CurrentAction)">@Html.ActionLink("Create", "Organisations/0", "Organisation")</li>
+                <li class="divider"></li>
+            </ul>
+        </div>
+    </section>
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Organisation", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Organisation Detail</a></p>
+        <div class="content" data-section-content="">
+
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Organisations", "Organisations/" + OrganisationID, "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Employees", "Groups/1", "Employees")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Communications", "Communications/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Areas", "Areas/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Departments", "Departments/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Banking Details", "BankingDetails/1", "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Splits", "Splits/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Deductions", "Deductions/1", "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("VAT Invoices", "VATInvoices/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Active Daily Periods", "ActiveDailyPeriods/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Contacts", "Contacts/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Locations", "Locations/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Fiscal Years", "FiscalYears/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Approved Machines", "ApprovedMachines/1", "Organisation")</li>
+                <li class="divider"></li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Licenses", "Licenses/1", "Organisation")</li>
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("License Types", "LicenseTypes/1", "Organisation")</li>
+            </ul>
+
+        </div>
+    </section>
+</div>

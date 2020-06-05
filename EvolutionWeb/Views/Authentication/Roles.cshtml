@@ -1,0 +1,76 @@
+﻿@model IEnumerable<string> 
+@{
+    ViewBag.Title = "Evolution";
+}
+@section HtmlHead{
+    @Html.Partial("HeadScripts")
+}
+
+<p>
+    @Html.ActionLink("Create Role", "CreateRole") |
+    @Html.ActionLink("Accounts", "Index")
+</p>
+<table id="roletable" class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Roles
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                <a href="@Url.Action("DeleteRole", new { id = item })" class="deleterole">
+                        <img src="@Url.Content("~/Content/Images/delete.png")" alt="Delete" /></a>
+                    @Html.DisplayFor(modelItem => item)
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="dialog-confirm" title="Delete this role?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete this role?</p>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#roletable').dataTable({ "bJQueryUI": true, "sPaginationType": "full_numbers", "bSort": false, "bFilter": false, "bPaginate": false });
+
+        $(".deleterole").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+
+
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: 250,
+                width: 300,
+                modal: true,
+                buttons: {
+                    "Delete role": function () {
+                        $.getJSON(url, function (data) {
+                            var success = data.success;
+                            if (success) {
+                                window.location = window.location;
+                                $(this).dialog("close");
+                            }
+                            else {
+                                alert(data.message);
+                            }
+                        });
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+        });
+
+    });
+</script>

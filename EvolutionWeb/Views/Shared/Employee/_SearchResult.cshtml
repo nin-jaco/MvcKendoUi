@@ -1,0 +1,136 @@
+﻿@{
+    //ViewBag.Title = "Evolution";
+}
+
+<br />
+
+<div class="row">
+
+    <div class="small-12 large-12 columns right">
+
+        <div class="row">              
+            <div class="small-4 large-2 columns">
+                <span>Rows per page:</span>
+            </div>
+            <div class="small-8 large-4 columns">
+                <input id="pageSizes" name="pageSizes" value="10" style="width: 250px; margin-bottom: 3px; margin-left:5px;" />
+            </div>
+            <div class="small-4 large-2 columns">
+            </div>
+            <div class="small-8 large-4 columns right">
+                <div id="msgNothingFound" class="float-right" style="width: 180px; margin-bottom: 3px; COLOR: red;"><strong>No Employee found...</strong></div>
+                <div id="msgSearching" class="float-right" style="width: 180px; margin-bottom: 3px; COLOR: red;"><strong>Searching...</strong></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 large-12 columns right">
+        <div id="gridSearchResults" style="margin-top:20px;"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#msgSearching").hide();
+    $("#msgNothingFound").hide();
+
+    $(document).ready(function () {
+
+        var pageSizes = [
+            { pSize: "3", pSizeTitle: "3 rows" },
+            { pSize: "10", pSizeTitle: "10 rows" },
+            { pSize: "20", pSizeTitle: "20 rows" },
+            { pSize: "30", pSizeTitle: "30 rows" },
+            { pSize: "50", pSizeTitle: "50 rows" },
+            { pSize: "80", pSizeTitle: "80 rows" },
+            { pSize: "100", pSizeTitle: "100 rows" },
+            { pSize: "200", pSizeTitle: "200 rows" },
+            { pSize: "300", pSizeTitle: "300 rows" },
+            { pSize: "500", pSizeTitle: "500 rows" }];
+
+        $("#pageSizes").kendoDropDownList({
+            placeholder: "Select a value...",
+            autoBind: true,
+            dataTextField: "pSizeTitle",
+            dataValueField: "pSize",
+            dataSource: pageSizes,
+            change: function (e) {
+                var pageSize = $("#pageSizes").val();
+                var searchGrid = $("#gridSearchResults").data("kendoGrid");
+                searchGrid.dataSource.pageSize(pageSize);
+                $("#msgSearching").show();
+                $("#msgNothingFound").hide();
+                searchGrid.refresh();
+            }
+        });
+        var sessionID = "@ViewBag.sessionID";
+        var gridSearchResults = $("#gridSearchResults").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/SearchEmployees")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            FirstName: $("#txtFirstName").val(),
+                            LastName: $("#txtLastName").val(),
+                            EmployeeTypeID: $("#ddlEmployeeType").val(),
+                            OrganisationID: $("#ddlOrganisation").val(),
+                            SessionID: sessionID,
+                            pageSize: options.pageSize,
+                            page: options.page,
+                            skip: options.skip,
+                            take: options.take
+                        }
+                    }
+                },
+                change: function (e) {
+                    //debugger;
+                    var RecordCount = $("#gridSearchResults").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {                        
+                        $("#msgSearching").hide();
+                        $("#msgNothingFound").hide();
+                    }
+                    else {
+                        $("#msgSearching").hide();
+                        $("#msgNothingFound").show();
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Count",
+                    model: {
+                        fields: {
+                            EmployeeID: { type: "number" },
+                            EmployeeName: { type: "string" },
+                            Employer: { type: "string" },
+                            EmployeeTypeName: { type: "string" },
+                            EmployeeStatusName: { type: "string" }
+                }
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            autoBind: false,
+            columns: [
+                        { field: 'Edit', title: 'Edit', width: 60, template: "<a href='@VirtualPathUtility.ToAbsolute("~/Employee/Edit")/#=EmployeeID#'>Edit</a>" },
+                        { field: 'EmployeeName', title: 'Name', width: 175 },
+                        { field: 'Employer', title: 'Employer', width: 120 },
+                        { field: 'EmployeeTypeName', title: 'Type', width: 120 },
+                        { field: 'EmployeeStatusName', title: 'Status', width: 120 },
+
+            ],
+
+        });
+        //gridSearchResults.find(".k-grid-pager").clone().insertBefore(gridSearchResults.children("table")).addClass("pagerTop").css("border-width", "0 0 1px 0");
+    });
+
+</script>

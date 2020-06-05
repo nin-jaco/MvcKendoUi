@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.ScreenDescription = "Search for an Organisation";
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisationSearch.cshtml"))
+
+    </div>
+</section>
+<section class="eight columns">
+    <div id="tabStrip">
+        <ul>
+            <li class="k-state-active">Search for Organisations</li>
+            <li id="searchresultsTab">Search Results</li>
+        </ul>
+        <div>
+            @Html.Partial(Url.Content("~/Views/Shared/Organisation/_Search.cshtml"))
+        </div>
+        <div>
+            @Html.Partial(Url.Content("~/Views/Shared/Organisation/_SearchResult.cshtml"))
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabStrip").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+        });
+
+        var ts = $("#tabStrip").data("kendoTabStrip");
+        ts.enable(ts.tabGroup.children("li:eq(1)"), false); // disable tab 1
+
+    });
+
+</script>

@@ -1,0 +1,217 @@
+﻿@{
+    //var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    
+    var organisationID = 1;
+
+    EvolutionRepository.Models.OrganisationComm orgCom = new EvolutionRepository.Models.OrganisationComm();
+    if (organisationID > 0)
+    {
+        //Editing;
+        orgCom = EvolutionBusinessLogic.Organisations.OrganisationCommLogic.GetOrganisationCommByID(1);
+    }
+    else
+    {
+        //Creating;
+    }
+}
+
+<div style="margin:10px;">
+    <input data-bind="@organisationID" type="hidden" id="organisationID" />
+    <p>Manage Communications for this Organisation.</p>
+    <div id="orgCommsListGrid"></div>
+    <div id="errorMessage" class="alert-box alert round">There were no records found.</div>
+    <p>Edit data:</p>
+    <div id="view" class="inoForm">
+        <fieldset>
+            <legend>Communication Details</legend>
+            <input data-bind="value: OrganisationCommID" type="hidden" id="selectedOrgCommID" />
+            <!-- Line 1 -->
+            <div class="row">
+                <div class="small-3 large-2 columns">
+                    Organisation Communication Type:
+                </div>
+                <div class="small-3 large-4 columns">
+                     <input id="ddlOrganisationCommType" data-bind="value: OrganisationCommTypeID" placeholder="name" />
+                </div>
+               <div class="small-3 large-2 columns">
+                    <label id="lblAddress">Address:</label>
+                </div>
+                <div class="small-3 large-4 columns">
+                    <input data-bind="value: Address" placeholder="Address" />
+                </div>
+           </div>
+
+            <!-- line 2-->
+            <div class="row">
+                <div class="small-3 large-2 columns">
+                    <label id="lblPrefix">Prefix</label>
+                </div>
+                <div class="small-3 large-4 columns">
+                     <input data-bind="value: AddressPrefix" placeholder="Prefix" />
+                </div>
+               <div class="small-3 large-2 columns">
+                    &nbsp;
+                </div>
+                <div class="small-3 large-4 columns">
+                    &nbsp;
+                </div>
+           </div>
+
+            <!-- line 3-->
+            <div class="row">
+                <div class="small-12 large-5 columns right">
+                    <ul class="button-group even-4">
+                        <li style="padding:5px">
+                            <input class="button success" type="button" onclick="updateOrgComm()" value="update" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            &nbsp;&nbsp;&nbsp;<input class="button alert" type="button" onclick="deleteOrgComm()" value="delete" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            &nbsp;&nbsp;&nbsp;<input class="button insert" type="button" onclick="insertOrgComm()" value="create" style="width:130px" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+</div>
+
+<script>
+
+    var selectedOrgComm;
+    var organisationID = "@organisationID";
+
+    $(document).ready(function () {
+
+        $("#errorMessage").hide();
+
+        var orgCommListGrid = $("#orgCommsListGrid").kendoGrid(
+        {
+            dataSource: {
+              transport: {
+                  read: {
+                      type: "GET",
+                      url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationComm")"
+                  },
+                  parameterMap: function (options, operation) {
+                      return {
+                          skip: options.skip,
+                          take: options.take,
+                          organisationID: organisationID
+                      }
+                  }
+              },
+              change: function (e) {
+                  var RecordCount = $("#orgCommsListGrid").data("kendoGrid").dataSource.total();
+                  if (RecordCount > 0) {
+                      $("#errorMessage").hide();
+                  }
+                  else {
+                      $("#errorMessage").show();
+                  }
+              },
+              pageSize: 10,
+              serverPaging: true,
+              schema: { data: "data", total: "count" },
+          },
+          sortable: true,
+          pageable: true,
+          selectable: "row",
+          schema:
+          {
+              model:
+              {
+                  fields:
+                  {
+                      OrganisationCommID: { type: "number" },
+                      OrganisationCommTypeID: { type: "number" },
+                      Address: { type: "string" },
+                      AddressPrefix: { type: "string" },
+                  }
+              }
+          },
+          autoBind: true,
+          columns: [
+                      { field: 'OrganisationCommID', title: 'ID', width: 20 },
+                      { field: 'OrganisationCommTypeID', title: 'Communication Type ID', width: 100 },
+                      { field: 'Address', title: 'Address', width: 100 },
+                      { field: 'AddressPrefix', title: 'Prefix', width: 100 }
+          ],
+          change: function (e) {
+              selectedOrgComm = this.dataItem(this.select());
+              kendo.bind($("#view"), selectedOrgComm);
+              $("#ddlOrganisationCommType").val(selectedOrgComm.OrganisationCommTypeID);
+          }
+        });
+
+        $("#ddlOrganisationCommType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationCommTypeName",
+            dataValueField: "OrganisationCommTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationCommType/GetListOfOrganisationCommTypes")"
+                }
+            }
+        })
+        });
+
+    });
+
+
+  function updateOrgComm() {
+      var organisationCommID = selectedOrgComm.OrganisationCommID;
+      var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationComm/")";
+
+        // Cannot directly use selectedUser - something about the Roles collections breaks the serializing/deserializing between JQuery/JSON/WebAPI
+      var DTOOrgComm = { UserID: selectedOrgComm.OrganisationCommID, OrganisationCommTypeID: selectedOrgComm.OrganisationCommTypeID, Address: selectedOrgComm.Address, AddressPrefix: selectedOrgComm.AddressPrefix };
+
+        $.ajax({
+            url: apiUrl,
+            type: 'PUT',
+            dataType: "application/json",
+            data: DTOOrgComm,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    $("#orgCommsListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+    function deleteOrgComm() {
+
+        var organisationCommID = selectedOrgComm.OrganisationCommID;
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationComm")/" + organisationCommID;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    $("#orgCommsListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+</script>

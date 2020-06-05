@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+}
+
+<div class="row">
+
+    <div class="large-2 columns">
+
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuEmployeeSearch.cshtml"))
+
+    </div>
+
+    <div class="large-10 columns">
+
+        <div id="Search">
+            <div>
+                @Html.Partial(Url.Content("~/Views/Shared/Employee/_Search.cshtml"))
+            </div>
+
+            <div>
+                @Html.Partial(Url.Content("~/Views/Shared/Employee/_SearchResult.cshtml"))
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabStrip").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+        });
+
+        var ts = $("#tabStrip").data("kendoTabStrip");
+        if (ts) {
+            ts.enable(ts.tabGroup.children("li:eq(1)"), false); // disable tab 1
+        }
+
+    });
+
+</script>

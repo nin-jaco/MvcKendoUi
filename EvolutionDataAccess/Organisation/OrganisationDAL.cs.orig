@@ -1,0 +1,167 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EvolutionDataAccess.Organisation
+{
+    public class OrganisationDAL
+    {
+        public class GetOrganistionListResult
+        {
+            public List<EvolutionRepository.Models.Organisation> data; // must contain only the record on the current page (apply the skip and take)
+            public int count; // Must contain the TOTAL number of records that the user can page through
+        }
+
+        public static GetOrganistionListResult GetOrganisations(int skip, int take)
+        {
+
+            using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+            {
+                ctx.Configuration.ProxyCreationEnabled = false;
+
+                var Result = new GetOrganistionListResult();
+                Result.count = ctx.Areas.Count();
+
+                Result.data = ctx.Organisations.OrderBy(x => x.OrganisationID).Skip(skip).Take(take).ToList();
+                return Result;
+            }
+
+        }
+        
+        public static bool UpdateOrgnisation(EvolutionRepository.Models.Organisation UpdateOrg)
+        {
+            var Result = false;
+
+            try
+            {
+                using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+                {
+
+                    var DBOrg = ctx.Organisations.FirstOrDefault(x => x.OrganisationID == UpdateOrg.OrganisationID);
+
+                    //DBOrg.AccountManager = UpdateOrg.AccountManager;
+                    //DBOrg.AssignedArea = UpdateOrg.AssignedArea;
+                    //DBOrg.BusinessLicenseNo = UpdateOrg.BusinessLicenseNo;
+                    //DBOrg.CashCollection = UpdateOrg.CashCollection;
+                    //DBOrg.Classification = UpdateOrg.Classification;
+                    //DBOrg.Collector = UpdateOrg.Collector;
+                    //DBOrg.ContactPerson = UpdateOrg.ContactPerson;
+                    //DBOrg.DefaultSplit = UpdateOrg.DefaultSplit;
+                    //DBOrg.District = UpdateOrg.District;
+                    //DBOrg.GPSCoordinates = UpdateOrg.GPSCoordinates;
+                    ////DBOrg.ID = UpdateOrg.ID;
+                    //DBOrg.Jurisdiction = UpdateOrg.Jurisdiction;
+                    //DBOrg.LiquorLicenseNo = UpdateOrg.LiquorLicenseNo;
+                    //DBOrg.MaximumMachines = UpdateOrg.MaximumMachines;
+                    //DBOrg.OrgName = UpdateOrg.OrgName;
+                    //DBOrg.OrgSubType = UpdateOrg.OrgSubType;
+                    //DBOrg.OrgType = UpdateOrg.OrgType;
+                    //DBOrg.ParentOrganisation = UpdateOrg.ParentOrganisation;
+                    //DBOrg.PDI = UpdateOrg.PDI;
+                    //DBOrg.PhysicalAddressCity = UpdateOrg.PhysicalAddressCity;
+                    //DBOrg.PhysicalAddressPostalCode = UpdateOrg.PhysicalAddressPostalCode;
+                    //DBOrg.PhysicalAddressProvince = UpdateOrg.PhysicalAddressProvince;
+                    //DBOrg.PhysicalAddressStreet1 = UpdateOrg.PhysicalAddressStreet1;
+                    //DBOrg.PhysicalAddressStreet2 = UpdateOrg.PhysicalAddressStreet2;
+                    //DBOrg.PhysicalAddressSurburb = UpdateOrg.PhysicalAddressSurburb;
+                    //DBOrg.PLAInspector = UpdateOrg.PLAInspector;
+                    //DBOrg.PLAInvestigator = UpdateOrg.PLAInvestigator;
+                    //DBOrg.PostalAddressCity = UpdateOrg.PostalAddressCity;
+                    //DBOrg.PostalAddressPostalCode = UpdateOrg.PostalAddressPostalCode;
+                    //DBOrg.PostalAddressProvince = UpdateOrg.PostalAddressProvince;
+                    //DBOrg.PostalAddressStreet1 = UpdateOrg.PostalAddressStreet1;
+                    //DBOrg.PostalAddressStreet2 = UpdateOrg.PostalAddressStreet2;
+                    //DBOrg.PostalAddressSurburb = UpdateOrg.PostalAddressSurburb;
+                    //DBOrg.RegistrationNo = UpdateOrg.RegistrationNo;
+                    //DBOrg.SignedBy = UpdateOrg.SignedBy;
+                    //DBOrg.SignedByDate = UpdateOrg.SignedByDate;
+                    //DBOrg.SiteManager = UpdateOrg.SiteManager;
+                    //DBOrg.SiteStatus = UpdateOrg.SiteStatus;
+                    //DBOrg.VATVendor = UpdateOrg.VATVendor;
+                    ////DBUser.Roles = UpdatedUser.Roles;
+                    ctx.SaveChanges();
+                    Result = true;
+                }
+            }
+            catch (Exception)
+            {
+                Result = false;
+            }
+
+            return Result;
+        }
+
+
+        public static bool CreateOrgnisation(EvolutionRepository.Models.Organisation CreateOrg)
+        {
+            var Result = false;
+
+            try
+            {
+                using (var ctx = new EvolutionRepository.Models.EvolutionDBContext())
+                {
+
+                    var DBOrg = ctx.Organisations.FirstOrDefault(x => x.OrganisationID == CreateOrg.OrganisationID);
+                    if (DBOrg == null)
+                    {
+                        //DBOrg.AccountManager = CreateOrg.AccountManager;
+                        //DBOrg.AssignedArea = CreateOrg.AssignedArea;
+                        //DBOrg.BusinessLicenseNo = CreateOrg.BusinessLicenseNo;
+                        //DBOrg.CashCollection = CreateOrg.CashCollection;
+                        //DBOrg.Classification = CreateOrg.Classification;
+                        //DBOrg.Collector = CreateOrg.Collector;
+                        //DBOrg.ContactPerson = CreateOrg.ContactPerson;
+                        //DBOrg.DefaultSplit = CreateOrg.DefaultSplit;
+                        //DBOrg.District = CreateOrg.District;
+                        //DBOrg.GPSCoordinates = CreateOrg.GPSCoordinates;
+                        ////DBOrg.ID = UpdateOrg.ID;
+                        //DBOrg.Jurisdiction = CreateOrg.Jurisdiction;
+                        //DBOrg.LiquorLicenseNo = CreateOrg.LiquorLicenseNo;
+                        //DBOrg.MaximumMachines = CreateOrg.MaximumMachines;
+                        //DBOrg.OrgName = CreateOrg.OrgName;
+                        //DBOrg.OrgSubType = CreateOrg.OrgSubType;
+                        //DBOrg.OrgType = CreateOrg.OrgType;
+                        //DBOrg.ParentOrganisation = CreateOrg.ParentOrganisation;
+                        //DBOrg.PDI = CreateOrg.PDI;
+                        //DBOrg.PhysicalAddressCity = CreateOrg.PhysicalAddressCity;
+                        //DBOrg.PhysicalAddressPostalCode = CreateOrg.PhysicalAddressPostalCode;
+                        //DBOrg.PhysicalAddressProvince = CreateOrg.PhysicalAddressProvince;
+                        //DBOrg.PhysicalAddressStreet1 = CreateOrg.PhysicalAddressStreet1;
+                        //DBOrg.PhysicalAddressStreet2 = CreateOrg.PhysicalAddressStreet2;
+                        //DBOrg.PhysicalAddressSurburb = CreateOrg.PhysicalAddressSurburb;
+                        //DBOrg.PLAInspector = CreateOrg.PLAInspector;
+                        //DBOrg.PLAInvestigator = CreateOrg.PLAInvestigator;
+                        //DBOrg.PostalAddressCity = CreateOrg.PostalAddressCity;
+                        //DBOrg.PostalAddressPostalCode = CreateOrg.PostalAddressPostalCode;
+                        //DBOrg.PostalAddressProvince = CreateOrg.PostalAddressProvince;
+                        //DBOrg.PostalAddressStreet1 = CreateOrg.PostalAddressStreet1;
+                        //DBOrg.PostalAddressStreet2 = CreateOrg.PostalAddressStreet2;
+                        //DBOrg.PostalAddressSurburb = CreateOrg.PostalAddressSurburb;
+                        //DBOrg.RegistrationNo = CreateOrg.RegistrationNo;
+                        //DBOrg.SignedBy = CreateOrg.SignedBy;
+                        //DBOrg.SignedByDate = CreateOrg.SignedByDate;
+                        //DBOrg.SiteManager = CreateOrg.SiteManager;
+                        //DBOrg.SiteStatus = CreateOrg.SiteStatus;
+                        //DBOrg.VATVendor = CreateOrg.VATVendor;
+                        ////DBUser.Roles = UpdatedUser.Roles;
+                        ctx.Organisations.Add(DBOrg);
+                        ctx.SaveChanges();
+                    }
+
+                    Result = true;
+                }
+            }
+            catch (Exception)
+            {
+                Result = false;
+            }
+
+            return Result;
+        }
+
+
+        
+    }
+}

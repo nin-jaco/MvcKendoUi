@@ -1,0 +1,506 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+
+    var EmployeeID = ViewBag.EmployeeID;
+
+    var blnAdd = false;
+    EvolutionRepository.Models.Employee Employee = new EvolutionRepository.Models.Employee();
+    if (EmployeeID > 0)
+    {
+        //Editing;
+        Employee = EvolutionBusinessLogic.Employees.EmployeeBL.GetEmployee(EmployeeID);
+    }
+    else
+    {
+        blnAdd = true;
+        //Creating;
+    }
+
+    string[] requiredFields = new string[] { "ddlTitleID", "txtFirstName", "txtLastName", "txtIdentificationNumber", "ddlEmployeeTypeID", "ddlEmployeeStatusID", "ddlOrganisationID" };
+    ViewBag.requiredFields = requiredFields;
+}
+
+@*<h2>Employee</h2>*@
+
+<div class="row">
+   <div class="large-2 columns">
+       @if (EmployeeID > 0)
+       {
+           Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuEmployee.cshtml"));
+       }
+   </div>
+
+    @*<div class="pageContent">*@
+    <div class="large-10 columns">
+
+        <div id="view" class="evoForm">
+
+            <fieldset>
+                <legend>Employee Details</legend>
+                <input  id="txtEmployeeID" type="hidden" value="@Employee.EmployeeID" />
+
+                <br />    
+                        
+               <div class="row">              
+                    <div class="small-4 large-2 columns" id="lbl_TitleID">
+                        Title:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlTitleID" value="@Employee.TitleID" style="width: 250px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns" id="lbl_FirstName">
+                        First Name:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtFirstName" value="@Employee.FirstName" style="width: 250px"/>
+                    </div>
+
+               </div>
+                        
+               <div class="row">              
+                    <div class="small-4 large-2 columns">
+                        Middle Name:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtMiddleName" value="@Employee.MiddleName" style="width: 250px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns" id="lbl_LastName">
+                        Last Name:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtLastName" value="@Employee.LastName" style="width: 250px"/>
+                    </div>
+
+               </div>
+                        
+               <div class="row">              
+                    <div class="small-4 large-2 columns">
+                        Date of Birth:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="dtDateOfBirth" value="@Employee.DateOfBirth" style="width: 150px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns" id="lbl_IdentificationNumber">
+                        ID Number:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtIdentificationNumber" value="@Employee.IdentificationNumber" style="width: 250px"/>
+                    </div>
+               </div>
+                        
+               <div class="row">              
+                    <div class="small-4 large-2 columns" id="lbl_HomePhone">
+                        Home Phone:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtHomePhone" value="@Employee.HomePhone" style="width: 150px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns">
+                        Mobile Phone:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtMobilePhone" value="@Employee.MobilePhone" style="width: 250px"/>
+                    </div>
+               </div>
+                        
+               <div class="row">              
+                    <div class="small-4 large-2 columns">
+                        Emergency Contact Name:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtEmergencyContactName" value="@Employee.EmergencyContactName" style="width: 150px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns">
+                        Emergency Contact Phone:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="txtEmergencyContactPhone" value="@Employee.EmergencyContactPhone" style="width: 250px"/>
+                    </div>
+               </div>
+
+               <div class="row">
+                    <div class="small-4 large-2 columns" id="lbl_EmployeeTypeID">
+                        Employee Type:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlEmployeeTypeID" value="@Employee.EmployeeTypeID" style="width:250px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns" id="lbl_EmployeeStatusID">
+                        Employee Status:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlEmployeeStatusID" value="@Employee.EmployeeStatusID" style="width: 250px"/>
+                    </div>     
+                
+               </div>
+            
+                <div class="row">                             
+                    <div class="small-4 large-2 columns" id="lbl_OrganisationID">
+                        Employer:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlOrganisationID" alue="@Employee.OrganisationID" style="width: 250px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns">
+                        Manager:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlManagerID" value="@Employee.ManagerID" style="width:250px"/>
+                    </div>
+                </div>           
+            
+                <div class="row">                             
+                    <div class="small-4 large-2 columns">
+                        Department:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlDepartmentID" value="@Employee.DepartmentID" style="width:250px"/>
+                    </div>
+
+                    <div class="small-4 large-2 columns">
+                        Area:
+                    </div>
+                    <div class="small-8 large-4 columns">
+                        <input id="ddlAreaID" value="@Employee.AreaID" style="width:250px"/>
+                    </div>
+                </div>           
+           
+                <div class="row">
+                    <div class="alert-box alert round small-4 large-12 columns" id="divMsg"></div>  
+                </div>
+
+                <div class="row">
+                    <div class="small-12 large-4 columns right">
+                        <ul class="button-group even-3">
+                            <li>
+                                <input class="button success" type="button" onclick="clearScreen()" value="Clear" />
+                            </li>
+                            <li>
+                                &nbsp;&nbsp;<input class="button success" type="button" onclick="updateEmployee()" value="Save" />
+                            </li>
+@*                            <li>
+                                &nbsp;&nbsp;<input class="button alert" type="button" onclick="deleteOrg()" value="Delete" />
+                            </li>                        *@
+                        </ul>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var selectedOrg;
+    var blnAdd;
+
+    $(document).ready(function () {
+        $("#divMsg").hide();
+        blnAdd = "@blnAdd";
+        blnAdd = blnAdd.toLowerCase();
+        $("#ddlOrganisationID").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationName",
+            dataValueField: "OrganisationID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationTree/GetOrgTree?sessionID=" + @ViewBag.sessionID)"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { OrganisationName: "Select a Organisation...", OrganisationID: 0 });
+                    }
+                    else
+                    {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationName: "None...", OrganisationID: 0 });
+                        e.response = ListOfNone;
+                    }
+                }
+            })
+        });
+
+        $("#ddlTitleID").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "TitleName",
+            dataValueField: "TitleID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Title/GetTitles")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { TitleName: "Select a Title...", TitleID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ TitleName: "None...", TitleID: 0 });
+                        e.response = ListOfNone;
+                    }
+                }
+            })
+        });
+
+        $("#ddlEmployeeTypeID").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "EmployeeTypeName",
+            dataValueField: "EmployeeTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/EmployeeType/GetEmployeeTypes")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { EmployeeTypeName: "Select Employee Type...", EmployeeTypeID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ EmployeeTypeName: "None...", EmployeeTypeID: 0 });
+                        e.response = ListOfNone;
+                    }
+                }
+            })
+        });
+
+        $("#ddlEmployeeStatusID").kendoDropDownList({
+            placeholder: "Select a status...",
+            dataTextField: "EmployeeStatusName",
+            dataValueField: "EmployeeStatusID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/EmployeeStatus/GetEmployeeStatuses")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { EmployeeStatusName: "Select Employee Status...", EmployeeStatusID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ EmployeeStatusName: "None...", EmployeeStatusID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+        var d = new Date();
+        $("#dtDateOfBirth").kendoDatePicker({
+            format: "yyyy-MM-dd",
+            value: new Date(d)
+        });
+        
+
+
+}); //document.ready
+    function updateEmployee() {
+        $("#divMsg").html("");
+        $("#divMsg").show();
+
+        var errorMsg = "";
+        @foreach (string requiredField in ViewBag.requiredFields)
+            {
+                @: if (('@requiredField'.indexOf('ddl') == 0 && $('#@requiredField').val() == '0') || $('#@requiredField').val() == '') { if (errorMsg != "") { errorMsg += ', ' }; errorMsg += $('#lbl_@requiredField.Substring(3)')[0].innerText.replace(':', ''); }
+                // { $('#divMsg').html('Specify @requiredField.Substring(3) please'); return; }
+                // errorMsg += $('#@requiredField')[0].attributes["errMsgLabel"].value;
+            }
+        if (errorMsg != "") {
+            $('#divMsg').html("The following fields are required: " + errorMsg);
+            return;
+        }
+        $("#divMsg").hide();
+
+@*        
+        public int EmployeeID { get; set; }
+        public Nullable<int> AreaID { get; set; }
+        public Nullable<int> DepartmentID { get; set; }
+        public int EmployeeTypeID { get; set; }
+        public int OrganisationID { get; set; }
+        public int TitleID { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string IdentificationNumber { get; set; }
+        public string HomePhone { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public Nullable<System.DateTime> DateHired { get; set; }
+        public string EmergencyContactName { get; set; }
+        public string EmergencyContactPhone { get; set; }
+        public Nullable<int> ManagerID { get; set; }
+        public string TrainingComments { get; set; }
+        public string Comments { get; set; }
+        public string MobilePhone { get; set; }
+        public byte[] Timestamp { get; set; }
+        public Nullable<int> EmployeeStatusID { get; set; }
+        public virtual ICollection<CardData> Employees1CardData { get; set; }
+        public virtual ICollection<Card> EmployeesCards { get; set; }
+        public virtual ICollection<DailyArea> EmployeesDailyAreas { get; set; }
+        public virtual ICollection<DailyArea> Employees1DailyAreas { get; set; }
+        public virtual Department DepartmentsDepartment { get; set; }
+        public virtual ICollection<EmployeeAddress> EmployeesEmployeeAddresses { get; set; }
+        public virtual EmployeeStatus EmployeeStatusesEmployeeStatus { get; set; }
+        public virtual EmployeeType EmployeeType { get; set; }
+        public virtual Title TitlesTitle { get; set; }
+        public virtual ICollection<Instruction> EmployeesInstructions { get; set; }
+        public virtual ICollection<License> EmployeesLicenses { get; set; }
+        public virtual ICollection<Notification> EmployeesNotifications { get; set; }
+        public virtual ICollection<PhotoEmployee> EmployeesPhotoEmployees { get; set; }
+        public virtual User EmployeesUser { get; set; }
+*@
+        //var DTOrg = { ID: vID, OrgName: vOrgName, ContactPerson: vContactPerson, OrgType: vOrgType, OrgSubType: vOrgSubType, Organisation: vOrganisation, District: vDistrict, ParentEmployee: vParentEmployee, RegistrationNo: vRegistrationNo, MaximumMachines: vMaximumMachines, AssignedArea: vAssignedArea, VATVendor: vVATVendor, PhysicalAddressStreet1: vPhysicalAddressStreet1, PhysicalAddressStreet2: vPhysicalAddressStreet2, PhysicalAddressSurburb: vPhysicalAddressSurburb, PhysicalAddressCity: vPhysicalAddressCity, PhysicalAddressProvince: vPhysicalAddressProvince, PhysicalAddressPostalCode: vPhysicalAddressPostalCode, PostalAddressStreet1: vPostalAddressStreet1, PostalAddressStreet2: vPostalAddressStreet2, PostalAddressSurburb: vPostalAddressSurburb, PostalAddressCity: vPostalAddressCity, PostalAddressProvince: vPostalAddressProvince, PostalAddressPostalCode: vPostalAddressPostalCode, GPSCoordinates: vGPSCoordinates, SiteStatus: vSiteStatus, AccountManager: vAccountManager, Collector: vCollector, SiteManager: vSiteManager, DefaultSplit: vDefaultSplit, SignedBy: vSignedBy, SignedByDate: vSignedByDate, CashCollection: vCashCollection, LiquorLicenseNo: vLiquorLicenseNo, BusinessLicenseNo: vBusinessLicenseNo, Classification: vClassification, PDI: vPDI, PLAInvestigator: vPLAInvestigator, PLAInspector: vPLAInspector };
+        var employee = {
+            EmployeeID: txtEmployeeID.value,
+            TitleID: ddlTitleID.value,
+            FirstName: txtFirstName.value,
+            MiddleName: txtMiddleName.value,
+            LastName: txtLastName.value,
+            DateOfBirth: dtDateOfBirth.value,
+            IdentificationNumber: txtIdentificationNumber.value,
+            HomePhone: txtHomePhone.value,
+            MobilePhone: txtMobilePhone.value,
+            EmergencyContactName: txtEmergencyContactName.value,
+            EmergencyContactPhone: txtEmergencyContactPhone.value,
+            EmployeeTypeID: ddlEmployeeTypeID.value,
+            EmployeeStatusID: ddlEmployeeStatusID.value,
+            OrganisationID: ddlOrganisationID.value,
+            ManagerID: ddlManagerID.value,
+            DepartmentID: ddlDepartmentID.value,
+            AreaID: ddlAreaID.value
+        };
+
+        var apiUrl = "/api/Employee/";
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            dataType: "application/json",
+            data: employee,
+            cache: false,
+            //error: function (xhr, status, error) {
+            //    // Show the error
+            //    $("#divMsg").html(xhr.responseText);
+            //    $("#divMsg").show();
+            //},
+            //success: function (data, textSuccess) {
+            //    // show the success message
+            //    $("#divMsg").html("Saved successfully");
+            //    $("#divMsg").show();
+            //}
+            statusCode: {
+                200: function (data) {
+                    $("#divMsg").html("Saved successfully");
+                }, // Successful DELETE
+                404: function (data) {
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    $("#divMsg").html(data.responseText);
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+        $("#divMsg").show();
+
+    @*        $.ajax({
+            url: "@VirtualPathUtility.ToAbsolute("~/api/Employee/Post")",
+            type: 'POST',
+            dataType: "application/json",
+            data: employee,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Saved successfully");
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                    //alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                    //alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  *@
+    };  //updateEmployee
+
+
+
+    function deleteOrg() {
+        //if (selectedOrg == null || selectedOrg == undefined) {
+        //    return;
+        //}
+
+        var OrgID = selectedOrgID.value; // selectedOrg.EmployeeID;
+
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/EmployeeAPI/DeleteEmployee")/" + OrgID;
+        debugger;
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Deleted successfully");
+                }, // Successful DELETE
+                404: function (data) {
+                    //alert(apiUrl + " ... Not Found(404)");
+                    //clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    //alert("Error in webpage. (Bad Request 400)");
+                    //clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400): " + data.value); //(System.Net.Http.HttpResponseMessage)
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+    function clearScreen() {
+        blnAdd = "true";
+        $("#divMsg").hide();
+        $("#ddlTitleID").data("kendoDropDownList").value("0");
+        $("#txtFirstName").val("");
+        $("#txtMiddleName").val("");
+        $("#txtLastName").val("");
+        d = new Date();
+        $("#dtDateOfBirth").data("kendoDatePicker").value(new Date(d));
+        $("#txtIdentificationNumber").val("");
+        $("#txtHomePhone").val("");
+        $("#txtMobilePhone").val("");
+        $("#txtEmergencyContactName").val("");
+        $("#txtEmergencyContactPhone").val("");
+        $("#ddlEmployeeTypeID").data("kendoDropDownList").value("0");
+        $("#ddlEmployeeStatusID").data("kendoDropDownList").value("0");
+        $("#ddlOrganisationID").data("kendoDropDownList").value("0");
+        //$("#ddlManagerID").data("kendoDropDownList").value("0");
+        //$("#ddlDepartmentID").data("kendoDropDownList").value("0");
+        //$("#ddlAreaID").data("kendoDropDownList").value("0");
+    };
+
+</script>

@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B5F5B081-63FC-47D6-A861-42D75B367B4B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EvolutionRepository</RootNamespace>
+    <AssemblyName>EvolutionRepository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ManualModels\AccountType.cs" />
+    <Compile Include="ManualModels\Area.cs" />
+    <Compile Include="ManualModels\Bank.cs" />
+    <Compile Include="ManualModels\BankingDetails.cs" />
+    <Compile Include="ManualModels\ChangePasswordModel.cs" />
+    <Compile Include="ManualModels\Contact.cs" />
+    <Compile Include="ManualModels\DataTableModel.cs" />
+    <Compile Include="ManualModels\Department.cs" />
+    <Compile Include="ManualModels\Employee.cs" />
+    <Compile Include="ManualModels\EmployeeStatus.cs" />
+    <Compile Include="ManualModels\FiscalPeriodType.cs" />
+    <Compile Include="ManualModels\FiscalYear.cs" />
+    <Compile Include="ManualModels\GetAreaListResult.cs" />
+    <Compile Include="ManualModels\GetOrganisationCommListResult.cs" />
+    <Compile Include="ManualModels\JobType.cs" />
+    <Compile Include="ManualModels\JurisdictionSimple.cs" />
+    <Compile Include="ManualModels\LogOnModel.cs" />
+    <Compile Include="ManualModels\Organisation.cs" />
+    <Compile Include="ManualModels\OrganisationCommTypeSimple.cs" />
+    <Compile Include="ManualModels\RegisterModel.cs" />
+    <Compile Include="ManualModels\Title.cs" />
+    <Compile Include="Models\AccountType.cs" />
+    <Compile Include="Models\Action.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AddressType.cs" />
+    <Compile Include="Models\ApplicationTab.cs" />
+    <Compile Include="Models\ApplicationTabSubType.cs" />
+    <Compile Include="Models\Approval.cs" />
+    <Compile Include="Models\ApprovalStatus.cs" />
+    <Compile Include="Models\ApprovalType.cs" />
+    <Compile Include="Models\ApprovedCertifiedModel.cs" />
+    <Compile Include="Models\Area.cs" />
+    <Compile Include="Models\AuditDailyArea.cs" />
+    <Compile Include="Models\AuditDailyCollection.cs" />
+    <Compile Include="Models\AuditDailyDeduction.cs" />
+    <Compile Include="Models\AuditFiscalPeriod.cs" />
+    <Compile Include="Models\AuditFiscalPeriodType.cs" />
+    <Compile Include="Models\AuditFiscalTotal.cs" />
+    <Compile Include="Models\AuditMachineDeduction.cs" />
+    <Compile Include="Models\AuditMachineTotal.cs" />
+    <Compile Include="Models\AuditOrganisationDeduction.cs" />
+    <Compile Include="Models\AuditOrganisationInvoice.cs" />
+    <Compile Include="Models\AuditOrganisationTotal.cs" />
+    <Compile Include="Models\Bank.cs" />
+    <Compile Include="Models\BankAccount.cs" />
+    <Compile Include="Models\BankAccountType.cs" />
+    <Compile Include="Models\Cabinet.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\CardAction.cs" />
+    <Compile Include="Models\CardData.cs" />
+    <Compile Include="Models\CardList.cs" />
+    <Compile Include="Models\CardType.cs" />
+    <Compile Include="Models\CardWriteResult.cs" />
+    <Compile Include="Models\CEMSUtilLog.cs" />
+    <Compile Include="Models\CertifiedFile.cs" />
+    <Compile Include="Models\CertifiedFileHashResult.cs" />
+    <Compile Include="Models\CertifiedGame.cs" />
+    <Compile Include="Models\CertifiedModel.cs" />
+    <Compile Include="Models\CertifiedSoftwareHashingAlgorithm.cs" />
+    <Compile Include="Models\CollectionType.cs" />
+    <Compile Include="Models\CommunicationProtocol.cs" />
+    <Compile Include="Models\CommunicationProtocolVersion.cs" />
+    <Compile Include="Models\DailyArea.cs" />
+    <Compile Include="Models\DailyCollection.cs" />
+    <Compile Include="Models\DailyDeduction.cs" />
+    <Compile Include="Models\DeductionTotalType.cs" />
+    <Compile Include="Models\DeductionType.cs" />
+    <Compile Include="Models\Demographic.cs" />
+    <Compile Include="Models\Denomination.cs" />
+    <Compile Include="Models\DenominationType.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\dtproperty.cs" />
+    <Compile Include="Models\EDCUnitSite.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeAddress.cs" />
+    <Compile Include="Models\EmployeeStatus.cs" />
+    <Compile Include="Models\EmployeeType.cs" />
+    <Compile Include="Models\EmployeeTypeCardType.cs" />
+    <Compile Include="Models\EntityType.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventType.cs" />
+    <Compile Include="Models\EvolutionDBContext.cs" />
+    <Compile Include="Models\FiscalPeriod.cs" />
+    <Compile Include="Models\FiscalPeriodType.cs" />
+    <Compile Include="Models\FiscalYear.cs" />
+    <Compile Include="Models\FrequencyType.cs" />
+    <Compile Include="Models\FundsTransferMethod.cs" />
+    <Compile Include="Models\GameCollection.cs" />
+    <Compile Include="Models\GameStatu.cs" />
+    <Compile Include="Models\GameStatus.cs" />
+    <Compile Include="Models\GameTheme.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Inspection.cs" />
+    <Compile Include="Models\Instruction.cs" />
+    <Compile Include="Models\InstructionIssueType.cs" />
+    <Compile Include="Models\InstructionStatu.cs" />
+    <Compile Include="Models\InstructionType.cs" />
+    <Compile Include="Models\Jurisdiction.cs" />
+    <Compile Include="Models\JurisdictionType.cs" />
+    <Compile Include="Models\License.cs" />
+    <Compile Include="Models\LicenseRenewal.cs" />
+    <Compile Include="Models\LicenseStatus.cs" />
+    <Compile Include="Models\LicenseType.cs" />
+    <Compile Include="Models\LifeCycleStatu.cs" />
+    <Compile Include="Models\Loan.cs" />
+    <Compile Include="Models\LoanRepayment.cs" />
+    <Compile Include="Models\Machine.cs" />
+    <Compile Include="Models\MachineApproval.cs" />
+    <Compile Include="Models\MachineCertifiedModel.cs" />
+    <Compile Include="Models\MachineCollection.cs" />
+    <Compile Include="Models\MachineConfig.cs" />
+    <Compile Include="Models\MachineDeduction.cs" />
+    <Compile Include="Models\MachineMovement.cs" />
+    <Compile Include="Models\MachineStatu.cs" />
+    <Compile Include="Models\MachineTotal.cs" />
+    <Compile Include="Models\MachineType.cs" />
+    <Compile Include="Models\Mapping\AccountTypeMap.cs" />
+    <Compile Include="Models\Mapping\ActionMap.cs" />
+    <Compile Include="Models\Mapping\AddressMap.cs" />
+    <Compile Include="Models\Mapping\AddressTypeMap.cs" />
+    <Compile Include="Models\Mapping\ApplicationTabMap.cs" />
+    <Compile Include="Models\Mapping\ApplicationTabSubTypeMap.cs" />
+    <Compile Include="Models\Mapping\ApprovalMap.cs" />
+    <Compile Include="Models\Mapping\ApprovalStatusMap.cs" />
+    <Compile Include="Models\Mapping\ApprovalTypeMap.cs" />
+    <Compile Include="Models\Mapping\ApprovedCertifiedModelMap.cs" />
+    <Compile Include="Models\Mapping\AreaMap.cs" />
+    <Compile Include="Models\Mapping\AuditDailyAreaMap.cs" />
+    <Compile Include="Models\Mapping\AuditDailyCollectionMap.cs" />
+    <Compile Include="Models\Mapping\AuditDailyDeductionMap.cs" />
+    <Compile Include="Models\Mapping\AuditFiscalPeriodMap.cs" />
+    <Compile Include="Models\Mapping\AuditFiscalPeriodTypeMap.cs" />
+    <Compile Include="Models\Mapping\AuditFiscalTotalMap.cs" />
+    <Compile Include="Models\Mapping\AuditMachineDeductionMap.cs" />
+    <Compile Include="Models\Mapping\AuditMachineTotalMap.cs" />
+    <Compile Include="Models\Mapping\AuditOrganisationDeductionMap.cs" />
+    <Compile Include="Models\Mapping\AuditOrganisationInvoiceMap.cs" />
+    <Compile Include="Models\Mapping\AuditOrganisationTotalMap.cs" />
+    <Compile Include="Models\Mapping\BankAccountMap.cs" />
+    <Compile Include="Models\Mapping\BankAccountTypeMap.cs" />
+    <Compile Include="Models\Mapping\BankMap.cs" />
+    <Compile Include="Models\Mapping\CabinetMap.cs" />
+    <Compile Include="Models\Mapping\CardActionMap.cs" />
+    <Compile Include="Models\Mapping\CardDataMap.cs" />
+    <Compile Include="Models\Mapping\CardListMap.cs" />
+    <Compile Include="Models\Mapping\CardMap.cs" />
+    <Compile Include="Models\Mapping\CardTypeMap.cs" />
+    <Compile Include="Models\Mapping\CardWriteResultMap.cs" />
+    <Compile Include="Models\Mapping\CEMSUtilLogMap.cs" />
+    <Compile Include="Models\Mapping\CertifiedFileHashResultMap.cs" />
+    <Compile Include="Models\Mapping\CertifiedFileMap.cs" />
+    <Compile Include="Models\Mapping\CertifiedGameMap.cs" />
+    <Compile Include="Models\Mapping\CertifiedModelMap.cs" />
+    <Compile Include="Models\Mapping\CertifiedSoftwareHashingAlgorithmMap.cs" />
+    <Compile Include="Models\Mapping\CollectionTypeMap.cs" />
+    <Compile Include="Models\Mapping\CommunicationProtocolMap.cs" />
+    <Compile Include="Models\Mapping\CommunicationProtocolVersionMap.cs" />
+    <Compile Include="Models\Mapping\DailyAreaMap.cs" />
+    <Compile Include="Models\Mapping\DailyCollectionMap.cs" />
+    <Compile Include="Models\Mapping\DailyDeductionMap.cs" />
+    <Compile Include="Models\Mapping\DeductionTotalTypeMap.cs" />
+    <Compile Include="Models\Mapping\DeductionTypeMap.cs" />
+    <Compile Include="Models\Mapping\DemographicMap.cs" />
+    <Compile Include="Models\Mapping\DenominationMap.cs" />
+    <Compile Include="Models\Mapping\DenominationTypeMap.cs" />
+    <Compile Include="Models\Mapping\DepartmentMap.cs" />
+    <Compile Include="Models\Mapping\dtpropertyMap.cs" />
+    <Compile Include="Models\Mapping\EDCUnitSiteMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeAddressMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeStatusMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeTypeCardTypeMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeTypeMap.cs" />
+    <Compile Include="Models\Mapping\EntityTypeMap.cs" />
+    <Compile Include="Models\Mapping\EventMap.cs" />
+    <Compile Include="Models\Mapping\EventTypeMap.cs" />
+    <Compile Include="Models\Mapping\FiscalPeriodMap.cs" />
+    <Compile Include="Models\Mapping\FiscalPeriodTypeMap.cs" />
+    <Compile Include="Models\Mapping\FiscalYearMap.cs" />
+    <Compile Include="Models\Mapping\FrequencyTypeMap.cs" />
+    <Compile Include="Models\Mapping\FundsTransferMethodMap.cs" />
+    <Compile Include="Models\Mapping\GameCollectionMap.cs" />
+    <Compile Include="Models\Mapping\GameStatuMap.cs" />
+    <Compile Include="Models\Mapping\GameStatusMap.cs" />
+    <Compile Include="Models\Mapping\GameThemeMap.cs" />
+    <Compile Include="Models\Mapping\GroupMap.cs" />
+    <Compile Include="Models\Mapping\InspectionMap.cs" />
+    <Compile Include="Models\Mapping\InstructionIssueTypeMap.cs" />
+    <Compile Include="Models\Mapping\InstructionMap.cs" />
+    <Compile Include="Models\Mapping\InstructionStatuMap.cs" />
+    <Compile Include="Models\Mapping\InstructionTypeMap.cs" />
+    <Compile Include="Models\Mapping\JurisdictionMap.cs" />
+    <Compile Include="Models\Mapping\JurisdictionTypeMap.cs" />
+    <Compile Include="Models\Mapping\LicenseMap.cs" />
+    <Compile Include="Models\Mapping\LicenseRenewalMap.cs" />
+    <Compile Include="Models\Mapping\LicenseStatusMap.cs" />
+    <Compile Include="Models\Mapping\LicenseTypeMap.cs" />
+    <Compile Include="Models\Mapping\LifeCycleStatuMap.cs" />
+    <Compile Include="Models\Mapping\LoanMap.cs" />
+    <Compile Include="Models\Mapping\LoanRepaymentMap.cs" />
+    <Compile Include="Models\Mapping\MachineApprovalMap.cs" />
+    <Compile Include="Models\Mapping\MachineCertifiedModelMap.cs" />
+    <Compile Include="Models\Mapping\MachineCollectionMap.cs" />
+    <Compile Include="Models\Mapping\MachineConfigMap.cs" />
+    <Compile Include="Models\Mapping\MachineDeductionMap.cs" />
+    <Compile Include="Models\Mapping\MachineMap.cs" />
+    <Compile Include="Models\Mapping\MachineMovementMap.cs" />
+    <Compile Include="Models\Mapping\MachineStatuMap.cs" />
+    <Compile Include="Models\Mapping\MachineTotalMap.cs" />
+    <Compile Include="Models\Mapping\MachineTypeMap.cs" />
+    <Compile Include="Models\Mapping\ModuleMap.cs" />
+    <Compile Include="Models\Mapping\MovementMap.cs" />
+    <Compile Include="Models\Mapping\MovementStatuMap.cs" />
+    <Compile Include="Models\Mapping\MovementTypeMap.cs" />
+    <Compile Include="Models\Mapping\NotificationMap.cs" />
+    <Compile Include="Models\Mapping\NotificationTypeMap.cs" />
+    <Compile Include="Models\Mapping\OperatorMap.cs" />
+    <Compile Include="Models\Mapping\OptionMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationAddressMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationChildSubTypeMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationCommMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationCommTypeMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationDeductionMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationOptionMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationStatuMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationSubTypeMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationTotalMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationTypeCardTypeMap.cs" />
+    <Compile Include="Models\Mapping\OrganisationTypeMap.cs" />
+    <Compile Include="Models\Mapping\OrgTreeMap.cs" />
+    <Compile Include="Models\Mapping\PhotoEmployeeMap.cs" />
+    <Compile Include="Models\Mapping\PhotoLibraryMap.cs" />
+    <Compile Include="Models\Mapping\PINUpdateMap.cs" />
+    <Compile Include="Models\Mapping\PrintJobMap.cs" />
+    <Compile Include="Models\Mapping\ProcessAuditLogMap.cs" />
+    <Compile Include="Models\Mapping\RepairStatusMap.cs" />
+    <Compile Include="Models\Mapping\ResourceActionMap.cs" />
+    <Compile Include="Models\Mapping\ResourceLocationMap.cs" />
+    <Compile Include="Models\Mapping\ResourceMap.cs" />
+    <Compile Include="Models\Mapping\RevenueProfileMap.cs" />
+    <Compile Include="Models\Mapping\RevenueProfileTypeMap.cs" />
+    <Compile Include="Models\Mapping\RevenueScaleMap.cs" />
+    <Compile Include="Models\Mapping\ServiceCallMap.cs" />
+    <Compile Include="Models\Mapping\SiteDeletedCardMap.cs" />
+    <Compile Include="Models\Mapping\SiteDisabledPeriodMap.cs" />
+    <Compile Include="Models\Mapping\SiteMachineMap.cs" />
+    <Compile Include="Models\Mapping\SiteMap.cs" />
+    <Compile Include="Models\Mapping\SiteVisitMap.cs" />
+    <Compile Include="Models\Mapping\sysdiagramMap.cs" />
+    <Compile Include="Models\Mapping\systemsettingMap.cs" />
+    <Compile Include="Models\Mapping\TitleMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
+    <Compile Include="Models\Module.cs" />
+    <Compile Include="Models\Movement.cs" />
+    <Compile Include="Models\MovementStatu.cs" />
+    <Compile Include="Models\MovementType.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationType.cs" />
+    <Compile Include="Models\Operator.cs" />
+    <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\Organisation.cs" />
+    <Compile Include="Models\OrganisationAddress.cs" />
+    <Compile Include="Models\OrganisationChildSubType.cs" />
+    <Compile Include="Models\OrganisationComm.cs" />
+    <Compile Include="Models\OrganisationCommType.cs" />
+    <Compile Include="Models\OrganisationDeduction.cs" />
+    <Compile Include="Models\OrganisationOption.cs" />
+    <Compile Include="Models\OrganisationStatu.cs" />
+    <Compile Include="Models\OrganisationSubType.cs" />
+    <Compile Include="Models\OrganisationTotal.cs" />
+    <Compile Include="Models\OrganisationType.cs" />
+    <Compile Include="Models\OrganisationTypeCardType.cs" />
+    <Compile Include="Models\OrgTree.cs" />
+    <Compile Include="Models\PhotoEmployee.cs" />
+    <Compile Include="Models\PhotoLibrary.cs" />
+    <Compile Include="Models\PINUpdate.cs" />
+    <Compile Include="Models\PrintJob.cs" />
+    <Compile Include="Models\ProcessAuditLog.cs" />
+    <Compile Include="Models\RepairStatus.cs" />
+    <Compile Include="Models\Resource.cs" />
+    <Compile Include="Models\ResourceAction.cs" />
+    <Compile Include="Models\ResourceLocation.cs" />
+    <Compile Include="Models\RevenueProfile.cs" />
+    <Compile Include="Models\RevenueProfileType.cs" />
+    <Compile Include="Models\RevenueScale.cs" />
+    <Compile Include="Models\ServiceCall.cs" />
+    <Compile Include="Models\Site.cs" />
+    <Compile Include="Models\SiteDeletedCard.cs" />
+    <Compile Include="Models\SiteDisabledPeriod.cs" />
+    <Compile Include="Models\SiteMachine.cs" />
+    <Compile Include="Models\SiteVisit.cs" />
+    <Compile Include="Models\sysdiagram.cs" />
+    <Compile Include="Models\systemsetting.cs" />
+    <Compile Include="Models\Title.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Context.tt" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Entity.tt" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Mapping.tt" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeGen Instructions.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

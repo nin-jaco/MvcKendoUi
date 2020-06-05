@@ -1,0 +1,195 @@
+﻿@{
+    ViewBag.Title = "Evolution - " + ViewBag.ScreenDescription;
+
+    EvolutionRepository.Models.User LoggedInUser = ViewBag.User;
+
+    var organisation = EvolutionBusinessLogic.LookupData.Jurisdictions.GetOrganisationJurisdictionByUser("", LoggedInUser.UserName);
+    var organisationID = 0;
+    if (organisation.Count > 0)
+    {
+        organisationID = organisation.FirstOrDefault().JurisdictionID;
+    }    
+}
+
+<h3>Search Criteria</h3>
+<div class="row">
+    <div class="six columns">
+        <label>Organisation</label>
+        <input id="txtOrganisation" value="" type="text" style="width:250px" class="depth" />
+    </div>
+    <div class="six columns">
+        <label>Child To</label>
+        <input id="ddlChildTo" value="" type="text" style="width:250px" />
+    </div>
+</div>
+<div class="row">
+    <div class="six columns">
+        <label>Type</label>
+        <input id="ddlType" value="" type="text" style="width:250px" />
+    </div>
+    <div class="six columns">
+        <label>Sub-Type</label>
+        <input id="ddlSubType" value="" type="text" style="width:250px" />
+    </div>
+</div>
+<div class="row">
+    <div class="six columns">
+        <label>Jurisdiction</label>
+        <input id="ddlJurisdiction" value="" type="text" style="width:250px" />
+    </div>
+    <div class="six columns">
+        
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="twelve columns right">
+        <ul class="button-group even-4">
+            <li style="padding:5px">
+                <input class="button small radius" type="button" onclick="doSearch()" value="Search" style="width:130px" />
+            </li>
+            <li style="padding:5px">
+                <input class="button small radius" type="button" onclick="clearPage()" value="Clear" style="width:130px" />
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function doSearch() {
+        var ts = $("#tabStrip").data("kendoTabStrip");
+        ts.enable(ts.tabGroup.children("li:eq(1)"), true); // enable tab 1
+        $("#tabStrip").data("kendoTabStrip").select(1);
+        $("#msgSearching").show();
+        $("#msgNothingFound").hide();
+        var grid = $("#gridSearchResults").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#gridSearchResults").data("kendoGrid").dataSource.read();
+    }
+
+    function clearPage() {
+        $("#msgSearching").hide();
+        $("#msgNothingFound").hide();
+        $('#txtOrganisation').val("");
+        var dropdownlist = $("#ddlChildTo").data("kendoDropDownList").select(0);
+        var dropdownlist = $("#ddlType").data("kendoDropDownList").select(0);
+        var dropdownlist = $("#ddlSubType").data("kendoDropDownList").select(0);
+        var dropdownlist = $("#ddlJurisdiction").data("kendoDropDownList").select(0);
+    }
+
+    $(document).ready(function () {
+
+        $("#ddlChildTo").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationName",
+            dataValueField: "OrganisationID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Jurisdictions/" + @LoggedInUser.UserName)" // url to remote data source (simple list of strings)
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationName: "Select a value...", OrganisationID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationName: "None...", OrganisationID: 0 });
+                        e.response = ListOfNone;
+                    }
+                },
+            })
+        });
+
+        $("#ddlType").kendoDropDownList({
+            placeholder: "Select a type...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationTypes/")" // url to remote data source (simple list of strings)
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            value: 0,
+                            paramtype: 'Type'
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationTypeName: "Select a type...", OrganisationTypeID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationTypeName: "None...", OrganisationTypeID: 0 });
+                        e.response = ListOfNone;
+                    }
+
+                },
+            })
+        });
+
+        $("#ddlSubType").kendoDropDownList({
+            placeholder: "Select a sub-type...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            autoBind: false,
+            cascadeFrom: "ddlType",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationTypes/")" // url to remote data source (simple list of strings)
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            value: options.filter.filters[0].value, //$("#ddlOrgType").val() 
+                            paramtype: 'SubType'
+                        }
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { OrganisationTypeName: "Select a sub-type...", OrganisationTypeID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationTypeName: "None...", OrganisationTypeID: 0 });
+                        e.response = ListOfNone;
+                    }
+
+                },
+            })
+        });
+
+        $("#ddlJurisdiction").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "JurisdictionName",
+            dataValueField: "JurisdictionID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Jurisdictions/" + @LoggedInUser.UserName)" // url to remote data source (simple list of strings)
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response != null) {
+                        e.response.splice(0, 1, { JurisdictionName: "Select a value...", JurisdictionID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ JurisdictionName: "None...", JurisdictionID: 0 });
+                        e.response = ListOfNone;
+                    }
+
+                },
+            })
+        });
+
+    });
+
+</script>

@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+}
+
+<h2>Master Data</h2>
+
+<div class="row">
+
+    <div class="large-10 columns">
+        @(Html.Kendo().TabStrip()
+                    .Name("tabstrip")
+                    .Items(tabstrip =>
+                    {
+                        tabstrip.Add().Text("Areas")
+                            .Selected(true)
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Areas"));
+
+                        tabstrip.Add().Text("Suburbs")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Suburbs"));
+
+                        tabstrip.Add().Text("City")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "City"));
+
+                        tabstrip.Add().Text("Areas")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Areas"));
+
+                        tabstrip.Add().Text("Departments")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Departments"));
+
+                        tabstrip.Add().Text("Banking Details")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "BankingDetails"));
+
+                        tabstrip.Add().Text("Splits")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Splits"));
+
+                        tabstrip.Add().Text("Deductions")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Deductions"));
+
+                        tabstrip.Add().Text("VAT Invoices")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "VATInvoices"));
+
+                        tabstrip.Add().Text("Active Daily Periods")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "ActiveDailyPeriods"));
+
+                        tabstrip.Add().Text("Contacts")
+                            .LoadContentFrom(Url.Content("~/Administration/RenderMasterDataAttributes/" + "Contacts"));
+
+                    })
+            )
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabStrip").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+
+        });
+
+    });
+
+</script>

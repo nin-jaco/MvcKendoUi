@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+}
+@section HtmlHead{
+    @Html.Partial("HeadScripts")
+}
+<p>
+    @Html.ActionLink("Create Account", "Create")|
+    @Html.ActionLink("Manage Roles", "Roles")
+</p>
+<table id="usertable" class="dataTable">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Last Login
+            </th>
+            <th>
+                Last Activity
+            </th>
+            <th>
+                Approved
+            </th>
+            <th>
+                Locked
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+    </tfoot>
+</table>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#usertable').dataTable({
+            "bJQueryUI": true,
+            "bAutoWidth": false,
+            "sPaginationType": "full_numbers",
+            "bSort": false,
+            "bServerSide": true,
+            "sAjaxSource": "Authentication/IndexHandler",
+            "bProcessing": true,
+            "aoColumns": [
+                        { "sName": "ID",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "fnRender": function (oObj) {
+                                return '<a href=\"/Authentication/Details/' +
+                                oObj.aData[0] + '\"><img src=\"@Url.Content("~/Content/Images/details.png")\" alt="details" /></a>' +
+                                '<a href=\"/Authentication/Edit/' +
+                                oObj.aData[0] + '\"><img src=\"@Url.Content("~/Content/Images/edit.png")\" alt="edit" /></a>' +
+                                '<a href=\"/Authentication/UserRoles/' +
+                                oObj.aData[0] + '\"><img src=\"@Url.Content("~/Content/Images/roles.png")\" alt="roles" /></a>' +
+                                '<a href=\"/Authentication/Delete/' +
+                                oObj.aData[0] + '\"><img src=\"@Url.Content("~/Content/Images/delete.png")\" alt="delete" /></a>';
+                            }
+                        },
+                        { "sName": "Username" },
+                        { "sName": "EMAIL" },
+                        { "sName": "CREATION_DATE" },
+                        { "sName": "LAST_LOGIN" },
+                        { "sName": "LAST_ACTIVITY" },
+                        { "sName": "IS_APPROVED", "fnRender": function (oObj) { return castStrToBool(oObj.aData[6].toString()) ? 'yes' : 'no'; } },
+                        { "sName": "IS_LOCKED", "fnRender": function (oObj) { return castStrToBool(oObj.aData[7].toString()) ? 'yes' : 'no'; ; } }
+                    ]
+        });
+    });
+
+    function castStrToBool(str) {
+        if (str.toLowerCase() == 'false') {
+            return false;
+        } else if (str.toLowerCase() == 'true') {
+            return true;
+        } else {
+            return undefined;
+        };
+    };
+</script>

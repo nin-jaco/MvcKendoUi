@@ -1,0 +1,613 @@
+﻿@{
+    ViewBag.ScreenDescription = "Revenue Profiles: Deductions";
+    
+    var organisationID = ViewBag.OrganisationID;
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input value="@organisationID" type="hidden" id="OrgID" />
+    <input data-bind="value: RevenueProfileID" type="hidden" id="revProfileID" />
+    <div id="gridDeductions"></div>
+    <div class="row">
+        <div class="twelve columns">
+            <div id="errorMessage" class="alert-box alert round">There were no records found.</div>  
+        </div>
+    </div>
+    <br />
+    <article id="view" class="blog_post">
+        <div class="twelve columns">
+            <h3>Deduction Information</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Deduction</label>
+                    <input id="txtDeductionName" name="txtDeductionName" data-bind="value: RevenueProfileName"  required data-required-msg="Please provide a deduction Name" class="depth" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Applies to</label>
+                    <input id="ddlAppliesTo" name="ddlAppliesTo" data-bind="value: AppliesOrganisationTypeID" disabled value="4" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Deduction type</label>
+                    <input id="ddlDeductionType" name="ddlDeductionType" data-bind="value: DeductionTypeID" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Based on</label>
+                    <input id="ddlBasedOn" name="ddlBasedOn" data-bind="value: RevenueProfileTypeID"  style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Collected By</label>
+                    <input id="ddlCollectedBy" name="ddlCollectedBy" data-bind="value: CollectOrganisationTypeID" disabled value="3" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Deduct From</label>
+                    <input id="ddlDeductFrom" name="ddlDeductFrom" data-bind="value: DeductionTotalTypeID" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="alert-box alert round small-4 large-12 columns" id="divMsg"></div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <ul class="button-group even-4">
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="saveDeduction()" value="Save" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="deleteDeduction()" value="Delete" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="clearScreen()" value="Clear" style="width:130px" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </article>  
+    <br />
+    <div id="gridScales"></div>
+    <div id="errorMessage2" class="alert-box alert round">There were no records found.</div>
+    <article id="viewScale" class="blog_post">
+        <div class="twelve columns">
+            <h3>Revenue Scales</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Fixed Amount</label>
+                    <input id="txtFixedAmount1" name="txtFixedAmount" data-bind="value: FixedAmount" class="depth" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    <label>Limit Gross Revenue</label>
+                    <input id="txtLimitGrossRevenue1" name="txtLimitGrossRevenue" data-bind="value: Limit" class="depth" style="width:250px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Rate%</label>
+                    <input id="txtRatePerc1" name="txtRatePerc" data-bind="value: Rate" class="depth" style="width:250px"/>
+                </div>
+                <div class="six columns">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="alert-box alert round small-4 large-12 columns" id="divMsg2"></div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <ul class="button-group even-4">
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="saveRevScale()" value="Save" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="deleteRevScale()" value="Delete" style="width:130px" />
+                        </li>
+                        <li style="padding:5px">
+                            <input class="button small radius" type="button" onclick="clearRevProfile()" value="Clear" style="width:130px" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+
+
+<script>
+    var blnAdd = "true";
+    var blnaddscale = "true";
+    var selectedDeduction, selectedScale;
+    var organisationID = "@organisationID";
+
+  
+
+    $(document).ready(function () {          
+        $("#gridScales").hide();
+        $("#errorMessage2").hide();
+        $("#viewScale").hide();
+
+        $("#errorMessage").hide();
+        $("#divMsg").hide();
+        var gridDeductions = $("#gridDeductions").kendoGrid(
+        {
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetOrgRevenueProfile/1")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            skip: options.skip,
+                            take: options.take,
+                            organisationID: organisationID
+                        }
+                    }
+                },
+                change: function (e) {
+                    var RecordCount = $("#gridDeductions").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {
+                        $("#errorMessage").hide();
+                    }
+                    else {
+                        $("#errorMessage").show();
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                schema: { data: "data", total: "count" },
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            schema:
+            {
+                model:
+                {
+                    fields:
+                    {
+                        RevenueProfileID: { type: "number" },
+                        RevenueProfileName: { type: "string" }                       
+                    }
+                }
+            },
+            autoBind: true,
+            columns: [
+                        { field: 'RevenueProfileID', title: 'Revenue Profile ID', width: 100, hidden: true },
+                        { field: 'RevenueProfileName', title: 'Revenue Profile Name', width: 100 }
+            ],
+            change: function (e) {
+                selectedDeduction = this.dataItem(this.select());
+                kendo.bind($("#view"), selectedDeduction);
+                blnAdd = "false";
+                $("#gridScales").hide();
+                $("#errorMessage2").hide();
+                $("#viewScale").hide();
+                if (selectedDeduction.DeductionTypeID == "2") { //sliding scale, enable editing of revenue scales
+                    LoadProfileScales();
+                }
+                //$("#ddlManager").val(selectedArea.EmployeeID);
+            }
+        });
+
+        //organisation types: applies to
+        $("#ddlAppliesTo").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")" // + organisationID)"
+                    }
+                }
+            })
+         });
+
+        //organisation types: Collected by
+        $("#ddlCollectedBy").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+        //revenue profile type
+        $("#ddlDeductionType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "DeductionTypeName", // "RevenueProfileTypeName",
+            dataValueField: "DeductionTypeID", //"RevenueProfileTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetDeductionType/1")" // + organisationID)"
+                    }
+                }
+            })
+         });
+
+        
+        //ddlBasedOn
+        $("#ddlBasedOn").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "RevenueProfileTypeName", //"DeductionTypeName",
+            dataValueField: "RevenueProfileTypeID",//"DeductionTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetRevenueProfileType/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+        //ddlDeductFrom
+        $("#ddlDeductFrom").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "DeductionTotalTypeName",
+            dataValueField: "DeductionTotalTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetDeductionTotalType/1")" // + organisationID)"
+                    }
+                }
+            })
+         });
+
+
+
+    });
+
+    // $("#ddlDeductionType").change(function(){
+    function LoadProfileScales(){
+        if (ddlDeductionType.value != "2") {
+            return
+        }
+
+        if (selectedDeduction == null || selectedDeduction == undefined) {
+            return;
+        }
+        //sliding scale
+        //alert(ddlDeductionType.value);
+        $("#gridScales").show();
+        $("#errorMessage2").show();
+        $("#viewScale").show();
+        var gridScale = $("#gridScales").kendoGrid(
+        {
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/GetRevenueProfileScales/1")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            skip: options.skip,
+                            take: options.take,
+                            revenueProfileID: selectedDeduction.RevenueProfileID
+                        }
+                    }
+                },
+                change: function (e) {
+                    var RecordCount = $("#gridScales").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {
+                        $("#errorMessage2").hide();
+                    }
+                    else {
+                        $("#errorMessage2").show();
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                schema: { data: "data", total: "count" },
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            schema:
+            {
+                model:
+                {
+                    fields:
+                    {
+                        FixedAmount: { type: "number" },
+                        Limit: { type: "number" },
+                        Rate: { type: "number" }
+                    }
+                }
+            },
+            autoBind: true,
+            columns: [
+                        { field: 'RevenueProfileID', title: 'Revenue Profile ID', width: 100, hidden:true },
+                        { field: 'RevenueScaleID', title: 'Revenue Scale ID', width: 100, hidden:true },                        
+                        { field: 'FixedAmount', title: 'Fixed Amount', width: 100 },
+                        { field: 'Limit', title: 'Limit', width: 100 },
+                        { field: 'Rate', title: 'Rate', width: 100 }
+            ],
+            change: function (e) {
+                selectedScale = this.dataItem(this.select());
+                kendo.bind($("#viewScale"), selectedScale);
+                blnaddscale = "false";
+                //$("#ddlManager").val(selectedArea.EmployeeID);
+            }
+        });
+
+    };
+
+
+
+
+    function deleteDeduction() {
+        if (selectedDeduction == null || selectedDeduction == undefined) {
+            return;
+        }
+
+        var profileID = selectedDeduction.RevenueProfileID;
+        
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/DeleteOrgRevenueProfile")/" + profileID;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Deleted successfully");
+                    $("#gridDeductions").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+    function saveDeduction() {
+        var vorgID = "@organisationID";
+        var vRevenueProfileID = blnAdd == "true" ? 0 : selectedDeduction.RevenueProfileID;
+
+        $("#divMsg").html("");
+        $("#divMsg").show();
+        if (txtDeductionName.value == "") {
+            $("#divMsg").html("Specify deduction name please");
+            return;
+        }
+
+        if (ddlDeductFrom.value=="") {
+            $("#divMsg").html("Specify deduct from");
+            return;
+        }
+
+        if (ddlAppliesTo.value == "") {
+            $("#divMsg").html("Specify applies to");
+            return;
+        }
+
+        if (ddlCollectedBy.value == "") {
+            $("#divMsg").html("Specify collected by");
+            return;
+        }
+
+        if (ddlDeductionType.value == "") {
+            $("#divMsg").html("Specify deduction type");
+            return;
+        }
+
+        if (ddlBasedOn.value == "") {
+            $("#divMsg").html("Specify based on");
+            return;
+        }
+        $("#divMsg").hide();
+
+        vRevenueProfileName = txtDeductionName.value; // selectedDeduction.RevenueProfileName;
+        vOrganisationID = vorgID;
+        vDeductionTotalTypeID = ddlDeductFrom.value;
+        vAppliesOrganisationTypeID = ddlAppliesTo.value;
+        vCollectOrganisationTypeID = ddlCollectedBy.value;
+        vRevenueProfileTypeID = ddlDeductionType.value;
+        vDeductionTypeID = ddlBasedOn.value;
+        vCreditOrganisationTypeID = 0;
+        vIsSplit = false;
+        vDateAdded = Date;
+        vDateDeleted = null;
+
+        var DTRevProfile = { RevenueProfileID: vRevenueProfileID, RevenueProfileName: vRevenueProfileName, OrganisationID: vOrganisationID, DeductionTotalTypeID: vDeductionTotalTypeID, AppliesOrganisationTypeID: vAppliesOrganisationTypeID, CollectOrganisationTypeID: vCollectOrganisationTypeID, RevenueProfileTypeID: vRevenueProfileTypeID, DeductionTypeID: vDeductionTypeID, CreditOrganisationTypeID: 0, IsSplit: vIsSplit, DateAdded: vDateAdded, DateDeleted: vDateDeleted };
+        $.ajax({
+            url:  "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostSaveRevenueProfile/1")",
+            type: 'POST',
+            dataType: "application/json",
+            data: DTRevProfile,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Saved successfully");
+                    $("#gridDeductions").data("kendoGrid").dataSource.read();
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                    //alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                    //alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+        
+
+    }; //saveProfile
+
+    function clearScreen() {
+        blnAdd = "true";
+        $("#ddlDeductFrom").val("");
+        $("#ddlDeductFrom").data("kendoDropDownList").text("");
+        $("#ddlCollectedBy").val("");
+        $("#ddlCollectedBy").data("kendoDropDownList").text("");
+        $("#ddlBasedOn").val("");
+        $("#ddlBasedOn").data("kendoDropDownList").text("");
+        $("#ddlDeductionType").val("");
+        $("#ddlDeductionType").data("kendoDropDownList").text("");
+        $("#ddlAppliesTo").val("");
+        $("#ddlAppliesTo").data("kendoDropDownList").text("");
+        $("#txtDeductionName").val("");
+    };
+
+
+    function saveRevScale() {
+        //RevenueProfileID, RevenueScaleID, FixedAmount, Limit, Rate
+        if (blnaddscale == "false" && (selectedScale==null || selectedScale ==undefined)) {
+            return;
+        }
+
+        $("#divMsg2").show();
+        if (revProfileID.value == "")
+        {
+            $("#divMsg2").html("Select a revenue profile first");
+            return;
+        }
+
+        if (isNaN(txtFixedAmount1.value)==true)
+        {
+            $("#divMsg2").html("Please enter a valid fixed amount");
+            return;
+        }
+        //alert(isNaN(txtFixedAmount1.value));
+        //debugger;
+        if (isNaN(txtLimitGrossRevenue1.value) ==true)
+        {
+            $("#divMsg2").html("Please enter a valid limit gross revenue");
+            return;
+        }
+
+        if (isNaN(txtRatePerc1.value) ==true)
+        {
+            $("#divMsg2").html("Please enter a valid Rate percentage");
+            return;
+        }
+        $("#divMsg2").hide();
+
+       // debugger;
+        var scaleId = blnaddscale == "true" ? "0" : selectedScale.RevenueScaleID;
+        var vRevScale = { RevenueProfileID: revProfileID.value, RevenueScaleID: scaleId, FixedAmount: txtFixedAmount1.value, Limit: txtLimitGrossRevenue1.value, Rate: txtRatePerc1.value, DateAdded:Date,DateDeleted:Date };
+        
+        $.ajax({
+            url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/SaveRevenueProfileScale/1")",
+             type: 'POST',
+             dataType: "application/json",
+             data: vRevScale,
+             cache: false,
+             statusCode: {
+                 200: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html("Saved successfully");
+                     $("#gridScales").data("kendoGrid").dataSource.read();
+                     // delete successful, lets refresh the grid.
+                     //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                 }, // Successful DELETE
+                 404: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html(apiUrl + "..... Not Found(404)");
+                     //alert(apiUrl + " ... Not Found(404)");
+                 }, // 404 Not Found
+                 400: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html("Error in webpage. (Bad Request 400)");
+                     //alert("Error in webpage. (Bad Request 400)");
+                 } // 400 Bad Request
+             } // statusCode
+         }); // ajax call 
+    };
+
+    function deleteRevScale() {
+        if (selectedScale == null || selectedScale == undefined) {
+            return;
+        }
+
+
+        var profileID = selectedScale.RevenueProfileID;
+        var scaleID = selectedScale.RevenueScaleID;
+        var keys = {RevenueProfileID: profileID, RevenueScaleID: scaleID};
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/DeleteRevenueProfileScale/1")";
+
+         $.ajax({
+             url: apiUrl,
+             type: 'DELETE',
+             data: keys,
+             cache: false,
+             statusCode: {
+                 200: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html("Deleted successfully");
+                     $("#gridScales").data("kendoGrid").dataSource.read();
+                 }, // Successful DELETE
+                 404: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html(apiUrl + "..... Not Found(404)");
+                 }, // 404 Not Found
+                 400: function (data) {
+                     clearRevProfile();
+                     $("#divMsg2").show();
+                     $("#divMsg2").html("Error in webpage. (Bad Request 400)");
+                 } // 400 Bad Request
+             } // statusCode
+         }); // ajax call  
+    };
+
+
+    function clearRevProfile() {
+        blnaddscale = "true";
+        $("#txtLimitGrossRevenue1").val("");
+        $("#txtRatePerc1").val("");
+        $("#txtFixedAmount1").val("");
+    };
+
+</script>

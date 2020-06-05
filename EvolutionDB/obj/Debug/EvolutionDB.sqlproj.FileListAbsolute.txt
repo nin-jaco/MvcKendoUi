@@ -1,0 +1,5 @@
+C:\Code\Managed\Evolution\EvolutionDB\bin\Debug\EvolutionDB.dacpac
+C:\Code\Managed\Evolution\EvolutionDB\bin\Debug\EvolutionDB.dll
+C:\Code\Managed\Evolution\EvolutionDB\bin\Debug\EvolutionDB.pdb
+C:\Code\Managed\Evolution\EvolutionDB\obj\Debug\EvolutionDB.dll
+C:\Code\Managed\Evolution\EvolutionDB\obj\Debug\EvolutionDB.pdb

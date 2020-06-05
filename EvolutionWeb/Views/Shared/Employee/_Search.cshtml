@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+
+    var parentOrgID = ViewBag.parentOrgID;
+}
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <div>
+
+            <div id="view" class="evoForm">
+
+                <fieldset>
+                    <legend>Employee Filters</legend>
+
+                        <div class="row">              
+                            <div class="small-4 large-2 columns">First Name</div>
+                            <div class="small-8 large-4 columns">
+                                <input id="txtFirstName" value="" type="text" style="width:250px" />
+                            </div>
+                            <div class="small-4 large-2 columns">Last Name</div>
+                            <div class="small-8 large-4 columns">
+                                <input id="txtLastName" value="" type="text" style="width:250px" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-4 large-2 columns">Organisation</div>
+                            <div class="small-8 large-4 columns">
+                                <input id="ddlOrganisation" value="" type="text" style="width:250px" />
+                            </div>
+                            <div class="small-4 large-2 columns">Employee Type</div>
+                            <div class="small-8 large-4 columns">
+                                <input id="ddlEmployeeType" value="" type="text" style="width:250px" />
+                            </div>
+                        </div>
+
+                </fieldset>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="small-12 large-4 columns right">
+                    <ul class="button-group even-3">
+                        <li>
+                            <input class="button alert" type="button" onclick="clearPage()" value="clear" />
+                        </li>
+                        <li>
+                            <input class="button success" type="button" onclick="doSearch()" value="search" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function doSearch() {
+        //var ts = $("#tabStrip").data("kendoTabStrip");
+        //ts.enable(ts.tabGroup.children("li:eq(1)"), true); // enable tab 1
+        //$("#tabStrip").data("kendoTabStrip").select(1);
+        $("#msgSearching").show();
+        $("#msgNothingFound").hide();
+        var grid = $("#gridSearchResults").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#gridSearchResults").data("kendoGrid").dataSource.read();
+    }
+
+    function clearPage() {
+        $("#msgSearching").hide();
+        $("#msgNothingFound").hide();
+        $("#txtFirstName").val("");
+        $("#txtLastName").val("");
+        var dropdownlist = $("#ddlOrganisation").data("kendoDropDownList").select(0);
+        var dropdownlist = $("#ddlEmployeeType").data("kendoDropDownList").select(0);
+    }
+
+    $(document).ready(function () {
+        var parentOrgID = $("#ddlParentOrganisation").val();
+        $("#ddlOrganisation").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationName",
+            dataValueField: "OrganisationID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationTree/GetOrgTree?sessionID=" + @ViewBag.sessionID)"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { OrganisationName: "Select a Organisation...", OrganisationID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ OrganisationName: "None...", OrganisationID: 0 });
+                        e.response = ListOfNone;
+                    }
+                }
+            })
+        });
+
+        $("#ddlEmployeeType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "EmployeeTypeName",
+            dataValueField: "EmployeeTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/EmployeeType/GetEmployeeTypes/")"
+                    }
+                },
+                requestEnd: function (e) {
+                    if (e.response) {
+                        e.response.splice(0, 1, { EmployeeTypeName: "Select an Employee Type...", EmployeeTypeID: 0 });
+                    }
+                    else {
+                        var ListOfNone = new Array();
+                        ListOfNone.push({ EmployeeTypeName: "None...", EmployeeTypeID: 0 });
+                        e.response = ListOfNone;
+                    }
+                }
+            })
+        });
+    });
+
+</script>

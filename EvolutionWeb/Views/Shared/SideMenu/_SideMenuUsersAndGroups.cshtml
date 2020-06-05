@@ -1,0 +1,31 @@
+﻿@{
+    //var testA = EvolutionWeb.Code.GlobalUtilities.IsCurrent("Maintain Users", ViewBag.CurrentScreen);
+    //var CurrentController = ControllerContext.ParentActionViewContext.RouteData.Values["action"];
+
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    var CurrentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    CurrentAction = string.Format("{0}/{1}", CurrentController, CurrentAction);
+}
+
+<div class="section-container accordion" data-section="accordion">
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Users</a></p>
+        <div class="content" data-section-content="">
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Users", CurrentAction)">@Html.ActionLink("Users", "Users", "Administration")</li>
+                <li class="divider"></li>
+            </ul>
+        </div>
+    </section>
+    <section class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration", CurrentController)">
+        <p class="title" data-section-title=""><a href="#">Groups</a></p>
+        <div class="content" data-section-content="">
+
+            <ul class="side-nav">
+                <li class="@EvolutionWeb.Code.GlobalUtilities.IsActive("Administration/Groups", CurrentAction)">@Html.ActionLink("Groups", "Groups", "Administration")</li>
+                <li class="divider"></li>
+            </ul>
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "Evolution - " + ViewBag.ScreenDescription;
+
+    var OrganisationID = ViewBag.OrganisationID;
+
+    var blnAdd = false;
+    EvolutionRepository.Models.BankAccount bankacc = new EvolutionRepository.Models.BankAccount();
+    if (OrganisationID > 0)
+    {
+        //Editing;
+        //bankacc = EvolutionBusinessLogic.Organisations.OrganisationLogic.GetOrganisationBankDetails(OrganisationID);
+    }
+    else
+    {
+        blnAdd = true;
+        //Creating;
+    }
+}
+
+<section class="four columns">
+    <div class="panel">
+        <h3>organisation menu</h3>
+        <p>Please select one of the options:</p>
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+
+    </div>
+</section>
+
+<section class="eight columns">
+    <input value="@bankacc.OrganisationID" type="hidden" id="selectedOrgID" />
+    <br />
+    <article class="blog_post">
+        <div class="twelve columns">
+            <h3>Banking Information</h3>
+            <div class="row">
+                <div class="six columns">
+                    <label>Account holder</label>
+                    <input value="@bankacc.AccountHolder" id="txtAccHolder" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Account Name</label>
+                    <input  value="@bankacc.AccountNumber" id="txtAccNumber" class="depth" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Bank</label>
+                    <input value="@bankacc.BankID" id="ddlBank" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Branch</label>
+                    <input  value="@bankacc.Branch" id="txtBranch" class="depth" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label>Branch Code</label>
+                    <input value="@bankacc.BranchCode" id="txtBranchCode" class="depth" style="width:250px" />
+                </div>
+                <div class="six columns">
+                    <label>Account Type</label>
+                    <input  value="@bankacc.AccountTypeID" id="ddlAccountType" style="width:250px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelfe columns">
+                    <div class="alert-box alert round small-4 large-12 columns" id="divMsg"></div> 
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <div class="row">
+        <div class="twelve columns right">
+            <ul class="button-group even-4">
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="saveBankingDetails()" value="Save" style="width:130px" />
+                </li>
+                @*<li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="deleteOrg()" value="Delete" style="width:130px" />
+                </li>*@
+                <li style="padding:5px">
+                    <input class="button small radius" type="button" onclick="clearBankScreen()" value="Clear" style="width:130px" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    var blnAdd;
+    $(document).ready(function () {
+        blnAdd = "@blnAdd";
+        $("#divMsg").hide();
+        $("#ddlBank").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "BankName",
+            dataValueField: "BankID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetBanks/1")"
+                    }
+                }
+            })
+         });
+
+
+        $("#ddlAccountType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "AccountTypeName",
+            dataValueField: "AccountTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetBankAccountTypes/1")"
+                    }
+                }
+            })
+        });
+
+
+    });
+
+
+    function clearBankScreen() {
+        blnAdd = true;
+        $("#txtAccHolder").val("");
+        $("#txtAccNumber").val("");
+        $("#ddlBank").val("");
+        $("#txtBranch").val("");
+    }
+
+
+    function saveBankingDetails() {
+        /*if (blnAdd == false) {
+            return;
+        }*/
+        //alert(blnAdd);
+        $("#divMsg").html("");
+        $("#divMsg").show();
+        if (txtAccHolder.value == "") {
+            $("#divMsg").html("Specify account holder please");
+            return;
+        }
+        
+        if (txtAccNumber.value == "") {
+            $("#divMsg").html("Specify account number please");
+            return;
+        }
+
+        if (ddlBank.value == "") {
+            $("#divMsg").html("Specify bank account please");
+            return;
+        }
+        
+        if (txtBranch.value == "") {
+            $("#divMsg").html("Specify branch please");
+            return;
+        }
+        $("#divMsg").hide();
+
+        var vOrganisationID = selectedOrgID.value;
+        var vAccountHolder = txtAccHolder.value;
+        var vAccountNumber = txtAccNumber.value;
+        var vBankID = ddlBank.value;
+        var vBranch = txtBranch.value 
+        var vBranchCode = txtBranchCode.value;
+        var vAccountTypeID = ddlAccountType.value;
+
+        var BankDetails = { OrganisationID: vOrganisationID, AccountHolder: vAccountHolder, AccountNumber: vAccountNumber, BankID: vBankID, Branch: vBranch, BranchCode: vBranchCode, AccountTypeID: vAccountTypeID };
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgBankDetails/1")";
+
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            dataType: "application/json",
+            data: BankDetails,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearBankScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Saved successfully");
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearBankScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                    //alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearBankScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                    //alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call 
+
+    };
+
+
+</script>

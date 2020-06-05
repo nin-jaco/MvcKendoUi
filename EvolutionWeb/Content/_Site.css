@@ -1,0 +1,1085 @@
+﻿html
+{
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+body
+{
+    background-color: #fff;
+    width: 90%;
+    min-width: 960px;
+    min-height: 100%;
+    margin: 0 auto;
+    color: #333;
+    font-size: .85em;
+    font-family: Arial, Helvetica, Sans-Serif;
+    padding: 0;
+}
+
+a
+{
+    color: #333;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a:link, a:visited,
+    a:active, a:hover
+    {
+        color: #333;
+    }
+
+    a:hover
+    {
+        background-color: #c7d1d6;
+    }
+
+header, footer, hgroup,
+nav, section
+{
+    display: block;
+}
+
+mark
+{
+    background-color: #a6dbed;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.float-left
+{
+    float: left;
+}
+
+.float-right
+{
+    float: right;
+}
+
+.clear-fix:after
+{
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+h1, h2, h3,
+h4, h5, h6
+{
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1
+{
+    font-size: 2em;
+}
+
+h2
+{
+    font-size: 1.75em;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active
+    {
+        padding: 0;
+        text-decoration: none;
+    }
+
+
+/* main layout
+----------------------------------------------------------*/
+.content-wrapper
+{
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.main-content
+{
+    padding-left: 5px;
+    padding-top: 1px;
+    min-height: 300px;
+}
+
+
+/*header .content-wrapper {
+    padding-top: 10px; 
+}*/
+
+#body
+{
+    background-color: #ebebeb;
+    clear: both;
+    padding-bottom: 65px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+#header
+{
+    width: 100%; /*left: 50%;
+
+    margin-left: -480px;
+    margin-right: auto;
+    position: fixed;*/
+    min-width: 960px;
+    height: 50px;
+    background-color: #f80000;
+    color: white;
+}
+
+#wrapper
+{
+    background-color: #ebebeb;
+    width: 100%;
+    min-width: 960px;
+    /*min-height: 200px;*/
+}
+
+#SubHeader
+{
+    height: 50px;
+    margin: 0 0 0 0px;
+    background-color: #ebebeb;
+    padding-left: 10px;
+    position: relative;
+}
+
+    #SubHeader #SubTitle
+    {
+        padding-left: 5px;
+        font-family: Arial, Rockwell, "Courier New", Courier, monospace;
+        font-size: 2.3em;
+        padding: 5px;
+        text-align: left;
+        margin: 2px 2px 2px 2px;
+        color: #333;
+    }
+
+.loginDetails
+{
+    font-size: small;
+    width: 450px;
+    height: 50px;
+    text-align: right;
+    color: #333;
+    right: 10px;
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+}
+
+/* ----- NAVIGATION ----- */
+.navigationwrapper 
+{
+    float:none;
+    background:#dbdbdb;
+}
+
+#navigation
+{
+    width: 200px;
+    left: 50%;
+    min-height: 500px; /* for modern browsers */
+    height: auto !important; /* for modern browsers */
+    background-color: #dbdbdb;
+    float: left;
+    color: #525252;
+    clear: both;
+    margin-top: -1px;
+    font-weight: bold;
+    font-size: 13px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+    #navigation li
+    {
+        list-style-type: none;
+        margin-left: -40px;
+    }
+
+    #navigation a
+    {
+        height: 50px;
+        background-color: #dbdbdb;
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        border-bottom-style: solid;
+        border-bottom-width: thin;
+        border-bottom-color: #ededed;
+        border-top-color: #ededed;
+        border-top-style: solid;
+        border-top-width: thin;
+
+    }
+
+        #navigation a:hover
+        {
+            background-color: #fff;
+        }
+
+
+
+.topMenuItem a
+{
+    border-style: none none none solid;
+    border-width: thin;
+    border-color: #bd0000;
+    text-decoration: none;
+    padding: 4px 8px 4px 8px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f80000;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Helvetica, Sans-Serif;
+    color: #fff;
+    display: block;
+    top: auto;
+    margin-top: 5px;
+    overflow: hidden;
+    position: relative;
+    right: 10px;
+}
+
+    .topMenuItem a:hover
+    {
+        color: #525252;
+        font-weight: bold;
+        font-size: 16px;
+        font-family: Arial, Helvetica, Sans-Serif;
+        background-color: #fff;
+    }
+
+/* ----- MAIN CONTENT ----- */
+
+#content
+{
+    margin-left: 205px;
+    min-height: 100%;
+    height: 100%;
+    background-color: #fff;
+    /*margin-top:10px;*/
+}
+
+
+#footer
+{
+    /*margin-top:0px;*/
+    width: 100%;
+    min-width: 960px;
+    height: 50px;
+    background-color: #ebebeb;
+    color: white;
+    /*position: absolute;*/
+    position: relative;
+    margin-top: -10px;
+    clear: both;
+}
+
+    #footer div
+    {
+        text-align: left;
+        vertical-align: middle;
+        margin-right: 20px;
+        padding-top: 13px;
+        padding-left: 10px;
+        color: #3C454F;
+        display: inline-block;
+
+        font-weight: bold;
+        font-size: 16px;
+        font-family: Arial, Helvetica, Sans-Serif;
+    }
+
+    #footer #help
+    {
+        border-style: solid;
+        border-width: thin;
+        border-color: #fff;
+        text-decoration: none;
+        padding: 9px 8px 0px 8px;
+        height: 30px;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #ebebeb;
+        color: #3C454F;
+        display: block;
+        top: auto;
+        margin-top: 5px;
+        width: 80px;
+        margin-right: 10px;
+    }
+
+        #footer #help:hover
+        {
+            background-color: #23282E;
+        }
+
+
+/* site title
+----------------------------------------------------------*/
+.site-title
+{
+    color: #fff;
+    font-family: Arial, Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.8em;
+    margin: 8px 0 0 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.site-logo
+{
+    color: #fff;
+    font-family: Arial, Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 2.3em;
+    text-align: left;
+    vertical-align: middle;
+    height: 30px;
+    margin: 15px 5px 5px, 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 30px;
+}
+
+.site-title a, .site-title a:hover, .site-title a:active
+{
+    background: none;
+    color: #fff;
+    outline: none;
+    text-decoration: none;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+a, img {
+    border:none;
+}
+
+fieldset legend
+{
+    font-size: 12px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AttributeComplexField
+{
+    margin: 10px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+/*Filter menu on the grid*/
+.k-filter-menu .k-textbox
+{
+    width:250px;
+}
+.k-filter-menu .k-dropdown-wrap
+{
+    width:225px;
+}
+.k-filter-menu .k-picker-wrap
+{
+    width:225px;
+}
+
+
+.AttributeField
+{
+    /*height: 30px;*/
+    padding: 3px 3px 3px 15px;
+    margin-left: 20px;
+    /*border-bottom: thin;
+    border-bottom-color: #EAEAEA;
+    border-bottom-width: thin;
+    border-bottom-style: solid;*/
+    clear: both;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AttributeDisplayTitle
+{
+    font-weight: 700;
+    font-size: 12px;
+    width: 130px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 0px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AttributeValue
+{
+    background-color: #fff !important;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 20px;
+    min-width: 300px;
+    position: relative;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+    .AttributeValue input
+    {
+        width: 250px;
+        background-color: #fff;
+    }
+
+    .AttributeValue span {
+        background-color: #fff !important;
+    }
+
+.AttributeMetaData
+{
+    font-weight: 200;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 15px;
+    position: relative;
+    color: #B0BAC4;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AttributeRequired
+{
+    color: #ad2323;
+}
+
+.AuditField
+{
+    padding: 3px 3px 3px 15px;
+    margin-left: 20px;
+    clear: both;
+}
+
+.AuditDisplayTitleCol1
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol2
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol3
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol4
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol5
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol6
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol7
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol8
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditDisplayTitleCol9
+{
+    font-weight: 700;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    color: #3C454F;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol1
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol2
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol3 
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol4
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol5
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol6
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol7
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol8
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValueCol9
+{
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: left;
+    margin-left: 5px;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditValue input
+{
+    width: 100px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AuditMetaData
+{
+    font-weight: 200;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    float: right;
+    margin-left: 350px;
+    position: relative;
+    color: #B0BAC4;
+    z-index: 2;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.AttributeCheckBox
+{
+    text-align: left;
+    padding: 5px;
+    float: left;
+    margin-left: 20px;
+    min-width: 300px;
+    position: relative;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.ErrorHeading
+{
+    color: #3C454F;
+    font-weight: 700;
+    font-size: 1.4em;
+    padding: 10px;
+}
+
+.ErrorDetail
+{
+    font-weight: 200;
+    color: #B0BAC4;
+    padding: 10px;
+}
+
+
+fieldset
+{
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+legend
+{
+    font-size: 1.2em;
+    font-weight: bold;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+textarea
+{
+    min-height: 75px;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+input[type="text"]
+{
+    width: 250px;
+    border: 1px solid #CCC;
+}
+
+input[type="password"]
+{
+    width: 200px;
+    border: 1px solid #CCC;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+
+table
+{
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+}
+
+    table td
+    {
+        padding: 5px;
+        border: solid 1px #e8eef4;
+    }
+
+    table th
+    {
+        padding: 6px 5px;
+        text-align: left;
+        background-color: #e8eef4;
+        border: solid 1px #e8eef4;
+    }
+
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+    clear: both;
+}
+
+.error
+{
+    color: Red;
+}
+
+div#title
+{
+    display: block;
+    text-align: left;
+}
+
+#logindisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    margin: 10px;
+    color: White;
+}
+
+    #logindisplay a:link
+    {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #logindisplay a:visited
+    {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #logindisplay a:hover
+    {
+        color: white;
+        text-decoration: none;
+    }
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+
+    color: #ff0000;
+    margin-left: 30px;
+    display: inline-block;
+    z-index:999;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #e6b3b3;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label,
+.editor-label
+{
+    margin: 1em 0 0 0;
+}
+
+
+input {
+    height: 20px;
+}
+
+.display-field,
+.editor-field
+{
+    margin: 0.5em 0 0 0;
+}
+
+.text-box
+{
+    width: 30em;
+}
+
+    .text-box.multi-line
+    {
+        height: 6.5em;
+    }
+
+.tri-state
+{
+    width: 6em;
+}
+
+.linkButton
+{
+    background-attachment: scroll !important;
+    background-clip: border-box !important;
+    background-image: none !important;
+    background-origin: padding-box !important;
+    background-position: 0 0 !important;
+    background-repeat: repeat !important;
+    background-size: auto auto !important;
+    border: medium none !important;
+    color: #808080 !important;
+    cursor: pointer !important;
+    display: inline-block;
+    height: 21px;
+    min-width: 100px;
+    opacity: 1 !important;
+    text-align: center;
+    text-decoration: none !important;
+    vertical-align: middle;
+    padding-bottom: 0 !important;
+    padding-left: 5px !important;
+    padding-right: 7px !important;
+    padding-top: 0 !important;
+}
+
+    .linkButton:hover
+    {
+        background-attachment: scroll !important;
+        background-clip: border-box !important;
+        background-image: none !important;
+        background-origin: padding-box !important;
+        background-position: 0 0 !important;
+        background-repeat: repeat !important;
+        background-size: auto auto !important;
+        background-color: #C0C0C0;
+        border: medium none !important;
+        color: #555555 !important;
+        cursor: pointer !important;
+        display: inline-block;
+        height: 21px;
+        min-width: 100px;
+        opacity: 1 !important;
+        text-align: center;
+        text-decoration: none !important;
+        padding-bottom: 0 !important;
+        padding-left: 5px !important;
+        padding-right: 7px !important;
+        padding-top: 0 !important;
+        vertical-align: middle;
+        font-weight: bold;
+    }
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu
+{
+    /*border-bottom: 1px #5C87B2 solid;*/
+    border: 1px dotted #C0C0C0;
+    padding: 5px;
+    position: relative;
+    margin: 0;
+    text-align: left;
+    background-color: #EAEAEA;
+}
+
+    ul#menu li
+    {
+        display: inline;
+        list-style: none;
+    }
+
+        ul#menu li#greeting
+        {
+            padding: 10px 20px;
+            font-weight: bold;
+            text-decoration: none;
+            line-height: 2.8em;
+            color: #fff;
+        }
+
+        ul#menu li a
+        {
+            background-color: red;
+            color: white !important;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            ul#menu li a:hover
+            {
+                background-color: #808080;
+                text-decoration: none;
+            }
+
+            ul#menu li a:active
+            {
+                background-color: #808080;
+                text-decoration: none;
+            }
+
+        ul#menu li.selected a
+        {
+            /*background-color: #fff;*/
+            color: #000;
+        }
+
+.k-datetimepicker
+{
+    width: 250px;
+}
+
+.k-datepicker
+{
+    width: 253px;
+}
+
+.k-combobox, .k-dropdown-wrap
+{
+    width: 250px;
+}

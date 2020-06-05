@@ -1,0 +1,450 @@
+﻿@{
+    ViewBag.Title = "Evolution - " + ViewBag.ScreenDescription;
+    
+    var organisationID = ViewBag.OrganisationID;
+}
+
+<div class="row">
+
+    <div class="large-2 columns">
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuOrganisation.cshtml"))
+    </div>
+
+    <div class="large-10 columns">
+        <div id="gridSplits"></div>
+        <div id="errorMessage" class="alert-box alert round">There were no records found.</div>
+        <hr />
+        <div id="view" class="evoForm">
+            <fieldset>
+                <legend>Split Details</legend>
+
+                <input data-bind="value: RevenueProfileID" type="hidden" id="selectedRevenueProfileID" />
+
+                <br />
+
+                <!-- Line 1 -->
+                <div class="row">
+                    <div class="small-3 large-3 columns">
+                        Profile Name:
+                    </div>
+                    <div class="small-3 large-3 columns">
+                        <input data-bind="value: RevenueProfileName"  id="txtProfileName" />
+                    </div>
+                   <div class="small-3 large-3 columns">
+                        <label>Based On:</label>
+                    </div>
+                    <div class="small-3 large-3 columns">
+                         @*<label id="lblBasedOn">Nett Gaming Revenue</label>*@
+                        <input id="ddlBasedOn" name="ddlBasedOn" data-bind="value: RevenueProfileTypeID" disabled value="6" />
+                    </div>
+               </div>
+
+                <!-- line 2-->
+                <div class="row">
+                    <div class="small-3 large-3 columns">
+                        <label>Deduction Type:</label>
+                    </div>
+                    <div class="small-3 large-3 columns">
+                         @*<label id="ddlDeductionType">Deduct From</label>*@
+                        <input id="ddlDeductionType" name="ddlDeductionType" data-bind="value: DeductionTypeID" disabled value="1"   />
+                    </div>
+                   <div class="small-3 large-3 columns">
+                        Deduct From:
+                    </div>
+                    <div class="small-3 large-3 columns">
+                        @*<label id="ddlDeductFrom">Nett Gaming Revenue</label>*@
+                        <input id="ddlDeductFrom" name="ddlDeductFrom" data-bind="value: DeductionTotalTypeID" disabled value="2"/>
+                    </div>
+               </div>
+                <!-- line 3 -->
+                <div class="row">
+                    <div class="small-3 large-3 columns">
+                        <label>Number of Companies in Split:</label>
+                    </div>
+                    <div class="small-3 large-3 columns">
+                         <label id="ddlNumberOfCompaniesinSplit">2</label>
+                    </div>
+                   <div class="small-3 large-3 columns">
+                        
+                    </div>
+                    <div class="small-3 large-3 columns">
+                        &nbsp;
+                    </div>
+               </div>
+
+                <!-- line 4 -->
+                <div class="row">
+                    <div class="small-3 large-3 columns">
+                        <label>Organisation Type:</label>
+                    </div>
+                    <div class="small-3 large-3 columns">
+                        @*<label id="lblOrganisationTypeSite">Site</label>*@
+                        @*<label id="lblOrganisationTypeOperator">Operator</label>*@
+                        <input id="ddlAppliesTo" name="ddlAppliesTo" data-bind="value: AppliesOrganisationTypeID" disabled value="4"/>
+                    </div>
+                   <div class="small-3 large-3 columns">
+                        <label>Collected By:</label>
+                    </div>
+                    <div class="small-3 large-3 columns">
+                        @*<label id="lblCollectedBySite">Site</label>*@
+                        @*<label id="lblCollectedByOperator">Operator</label>*@
+                        <input id="ddlCollectedBy" name="ddlCollectedBy" data-bind="value: CollectOrganisationTypeID" disabled value="3" />
+                    </div>
+               </div>
+
+                <!-- line 6 -->
+                <div class="row">
+                    <div class="small-12 large-12 columns">
+                        <fieldset>
+                            <legend>Split Percentages:</legend>
+                            Site: <input data-bind="value: SiteSplit" id="siteSplit" />
+                            Operator: <input data-bind="value: OperatorSplit" id="operatorSplit" />
+                        </fieldset>
+                    </div>
+               </div>
+
+               <div class="row">
+                    <div class="small-12 large-10 columns">
+                        <div class="alert-box alert round small-4 large-12 columns" id="divMsg"></div>  
+                    </div>
+                    <div class="small-12 large-2 columns">
+                        &nbsp;
+                    </div>
+               </div>
+
+
+                <!-- line 7-->
+                <div class="row">
+                    <div class="small-12 large-5 columns right">
+                        <ul class="button-group even-4">
+                            <li style="padding:5px">
+                                <input class="button success" type="button" onclick="saveSplits()" value="Save"  id="saveSplits"/>
+                            </li>
+                            <li style="padding:5px">
+                                <input class="button alert" type="button" onclick="deleteSplit()" value="delete" />
+                            </li>
+                           @* <li style="padding:5px">
+                                <input class="button insert" type="button" onclick="saveSplits()" value="Save" />
+                            </li>*@
+                        </ul>
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var selectedSplit;
+    var organisationID = "@organisationID";
+    var blnAdd = "true";
+   
+    $(document).ready(function () {
+        //$("#saveSplits").attr('disabled', 'disabled');
+        $("#saveSplits").attr('disabled', 'disabled');
+
+        $("#errorMessage").hide();
+        $("#divMsg").hide();
+        var gridSplits = $("#gridSplits").kendoGrid(
+        {
+            dataSource: {
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/Split")"
+                    },
+                    parameterMap: function (options, operation) {
+                        return {
+                            skip: options.skip,
+                            take: options.take,
+                            organisationID: organisationID
+                        }
+                    }
+                },
+                change: function (e) {
+                    var RecordCount = $("#gridSplits").data("kendoGrid").dataSource.total();
+                    if (RecordCount > 0) {
+                        $("#errorMessage").hide();
+                        $("#saveSplits").attr('disabled', 'disabled'); //allow for saving of one split per organisation
+                    }
+                    else {
+                        $("#errorMessage").show();
+                        $("#saveSplits").attr('disabled', false); //allow for saving of one split per organisation
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                schema: { data: "Data", total: "Count" },
+            },
+            sortable: true,
+            pageable: true,
+            selectable: "row",
+            schema:
+            {
+                model:
+                {
+                    fields:
+                    {
+                        DateAdded: {type: "date"},
+                        RevenueProfileID: {type: "number"},
+                        RevenueProfileName: {type: "string"},
+                        RevenueProfileTypeID: {type: "number"},
+                        RevenueProfileTypeName: {type: "string"},
+                        DeductionTypeID: {type: "number"},
+                        DeductionTypeName: {type: "string"},
+                        DeductionTotalTypeID: {type: "number"},
+                        DeductionTotalTypeName: {type: "string"},
+                        AppliesOrganisationTypeID: {type: "number"},
+                        AppliesOrganisationTypeName: {type: "string"},
+                        CollectOrganisationTypeID: {type: "number"},
+                        CollectOrganisationTypeName: {type: "string"},
+                        CreditOrganisationTypeID: {type: "number"},
+                        CreditOrganisationTypeName: {type: "string"},
+                    }
+                }
+            },
+            autoBind: true,
+            columns: [
+                        { field: 'RevenueProfileName', title: 'Revenue Profile Name', width: 100 },
+                        { field: 'RevenueProfileTypeName', title: 'Revenue Profile Type Name', width: 100 },
+                        { field: 'DeductionTypeName', title: 'Deduction Type Name', width: 100 },
+                        { field: 'DeductionTotalTypeName', title: 'Deduction Total Type Name', width: 100 },
+                        { field: 'AppliesOrganisationTypeName', title: 'Applies Organisation Type Name', width: 100 },
+                        { field: 'CollectOrganisationTypeName', title: 'Collect Organisation Type Name', width: 100 },
+                        { field: 'CreditOrganisationTypeName', title: 'Credit Organisation Type Name', width: 100 }
+            ],
+            change: function (e) {
+                selectedSplit = this.dataItem(this.select());
+                kendo.bind($("#view"), selectedSplit);
+                blnAdd = "false";
+                $("#saveSplits").attr('disabled', false);
+                //$("#ddlOrganisationCommType").val(selectedOrgComm.OrganisationCommTypeID);
+            }
+        });
+
+       @* $("#ddlDeductionType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "DeductionTypeName",
+            dataValueField: "deductionTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/DeductionType/GetListOfDeductionTypes")"
+                    }
+                }
+            })
+        });*@
+        
+        //organisation types: applies to
+        $("#ddlAppliesTo").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+        //organisation types: Collected by
+        $("#ddlCollectedBy").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "OrganisationTypeName",
+            dataValueField: "OrganisationTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostOrgTypes/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+        //revenue profile type
+        $("#ddlDeductionType").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "DeductionTypeName", // "RevenueProfileTypeName",
+            dataValueField: "DeductionTypeID", //"RevenueProfileTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetDeductionType/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+
+        //ddlBasedOn
+        $("#ddlBasedOn").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "RevenueProfileTypeName", //"DeductionTypeName",
+            dataValueField: "RevenueProfileTypeID",//"DeductionTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetRevenueProfileType/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+        //ddlDeductFrom
+        $("#ddlDeductFrom").kendoDropDownList({
+            placeholder: "Select a value...",
+            dataTextField: "DeductionTotalTypeName",
+            dataValueField: "DeductionTotalTypeID",
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "POST",
+                        url: "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/PostGetDeductionTotalType/1")" // + organisationID)"
+                    }
+                }
+            })
+        });
+
+
+
+
+    });
+
+    $("#operatorSplit").change(function () {
+        var right = $("#operatorSplit").val();
+        $("#siteSplit").val(100 - right);
+    });
+
+    function saveSplits() {
+        //ddlBasedOn
+        
+        if (blnAdd=="false" && (selectedSplit == null || selectedSplit == undefined)) {
+            return;
+        }
+
+        $("#divMsg").show();
+        if (txtProfileName.value == "") {           
+            $("#divMsg").html("Specify profile name please");
+            return;
+        };
+
+        if (isNaN(siteSplit.value) == true || siteSplit.value=="") {
+            $("#divMsg").html("Enter valid site split value");
+            return;
+        }
+
+        if (isNaN(operatorSplit.value) == true || operatorSplit.value=="") {
+            $("#divMsg").html("Enter valid operator split value");
+            return;
+        }
+        $("#divMsg").hide();
+
+        var vRevenueProfileID = blnAdd == "true" ? 0 : selectedSplit.RevenueProfileID;
+        vRevenueProfileName = txtProfileName.value; // selectedDeduction.RevenueProfileName;
+        vOrganisationID = organisationID;
+        vDeductionTotalTypeID = ddlDeductFrom.value;
+        vAppliesOrganisationTypeID = ddlAppliesTo.value;
+        vCollectOrganisationTypeID = ddlCollectedBy.value;
+        vRevenueProfileTypeID = ddlBasedOn.value;
+        vDeductionTypeID = ddlDeductionType.value;
+        vCreditOrganisationTypeID = 0;
+        vIsSplit = true;
+        vDateAdded = Date;
+        vDateDeleted = null;
+        vSiteSplit = siteSplit.value;
+        vOperatorSplit = operatorSplit.value;
+        var DTRevProfileSplit = { RevenueProfileID: vRevenueProfileID, RevenueProfileName: vRevenueProfileName, OrganisationID: vOrganisationID, DeductionTotalTypeID: vDeductionTotalTypeID, AppliesOrganisationTypeID: vAppliesOrganisationTypeID, CollectOrganisationTypeID: vCollectOrganisationTypeID, RevenueProfileTypeID: vRevenueProfileTypeID, DeductionTypeID: vDeductionTypeID, CreditOrganisationTypeID: 0, IsSplit: vIsSplit, DateAdded: vDateAdded, DateDeleted: vDateDeleted, SiteSplit: vSiteSplit, OperatorSplit: vOperatorSplit };
+        debugger;
+        $.ajax({
+            url: "@VirtualPathUtility.ToAbsolute("~/api/Split/SaveRevenueProfileSplits/1")",
+            type: 'POST',
+            dataType: "application/json",
+            data: DTRevProfileSplit,
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Saved successfully");
+                    $("#gridSplits").data("kendoGrid").dataSource.read();
+                    // delete successful, lets refresh the grid.
+                    //$("#orgListGrid").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                    //alert(apiUrl + " ... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                    //alert("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+
+
+    }; //function saveSplits()
+
+    function deleteSplit() {
+        if (selectedSplit == null || selectedSplit == undefined) {
+            return;
+        }
+
+        var profileID = selectedSplit.RevenueProfileID;
+
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/OrganisationAPI/DeleteOrgRevenueProfile")/" + profileID;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'DELETE',
+            cache: false,
+            statusCode: {
+                200: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Deleted successfully");
+                    $("#gridSplits").data("kendoGrid").dataSource.read();
+                }, // Successful DELETE
+                404: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html(apiUrl + "..... Not Found(404)");
+                }, // 404 Not Found
+                400: function (data) {
+                    clearScreen();
+                    $("#divMsg").show();
+                    $("#divMsg").html("Error in webpage. (Bad Request 400)");
+                } // 400 Bad Request
+            } // statusCode
+        }); // ajax call  
+    };
+
+
+
+    function clearScreen() {
+        blnAdd = "true";
+        $("#ddlDeductFrom").val("");
+        $("#ddlDeductFrom").data("kendoDropDownList").text("");
+        $("#ddlCollectedBy").val("");
+        $("#ddlCollectedBy").data("kendoDropDownList").text("");
+        $("#ddlBasedOn").val("");
+        $("#ddlBasedOn").data("kendoDropDownList").text("");
+        $("#ddlDeductionType").val("");
+        $("#ddlDeductionType").data("kendoDropDownList").text("");
+        $("#ddlAppliesTo").val("");
+        $("#ddlAppliesTo").data("kendoDropDownList").text("");
+        $("#txtProfileName").val("");
+    };
+
+</script>

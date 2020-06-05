@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "Evolution";
+    var CurrentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+
+}
+
+<nav class="breadcrumbs">
+    @Html.ActionLink("Home", "Index", "Home")
+    @Html.ActionLink("Administration", "Index", "Administration")
+    @Html.ActionLink("Users", "Users", CurrentController, new { @class = "current" })
+</nav>
+
+<div class="row">
+
+    <div class="large-2 columns">
+
+        @Html.Partial(Url.Content("~/Views/Shared/SideMenu/_SideMenuUsersAndGroups.cshtml"))
+
+    <div class="pageContent">
+
+        </div>
+
+        <p>
+            Maintain users. This page provides a demo of how to use a Kendo Grid, populated with data from a Web-API call.
+        </p>
+
+        <div id="userListGrid"></div>
+        <div id="errormsg" class="alert-box alert round">There were no records found.</div>
+
+        <p>Edit data:</p>
+
+        <div id="view" class="evoForm">
+
+            <fieldset>
+                <legend>User Details</legend>
+                <input data-bind="value: UserID" type="hidden" id="selectedUserID" />
+                <div class="row">
+                    <div class="small-10 large-10 columns">
+
+                        <div class="row">
+
+                            <div class="small-12 large-6 columns">
+                                <div class="row">
+                                    <div class="small-4 large-4 columns">
+                                        UserID
+                                    </div>
+                                    <div class="small-8 large-8 columns">
+                                        <input data-bind="value: UserID" readonly="true" placeholder="name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="small-12 large-6 columns">
+                                <div class="row">
+                                    <div class="small-4 large-4 columns">
+                                        Username
+                                    </div>
+                                    <div class="small-8 large-8 columns">
+                                        <input data-bind="value: Username" placeholder="name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="small-12 large-6 columns">
+                                <div class="row">
+                                    <div class="small-4 large-8 columns">
+                                        <label>Mobile Number</label>
+                                    </div>
+                                    <div class="small-8 large-4 columns">
+                                        <input data-bind="value: Mobile" placeholder="+27821112222" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 large-4 columns right">
+                        <ul class="button-group even-3">
+
+                            <li>
+                                <input class="button success" type="button" onclick="updateUser()" value="update" />
+                            </li>
+                            <li>
+                                <input class="button alert" type="button" onclick="deleteUser()" value="delete" />
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    var selectedUser;
+
+    $(document).ready(function () {
+
+        var userListGrid = $("#userListGrid").kendoGrid(
+      {
+          dataSource: {
+              transport: {
+                  read: {
+                      type: "GET",
+                      url: "@VirtualPathUtility.ToAbsolute("~/api/Person")"
+                  },
+                  parameterMap: function (options, operation) {
+                      return {
+                          skip: options.skip,
+                          take: options.take
+                      }
+                  }
+              },
+              change: function (e) {
+                  var RecordCount = $("#userListGrid").data("kendoGrid").dataSource.total();
+                  if (RecordCount > 0) {
+                      $("#errormsg").hide();
+                  }
+                  else {
+                      $("#errormsg").show();
+                  }
+              },
+              pageSize: 10,
+              serverPaging: true,
+              schema: { data: "data", total: "count" },
+          },
+          sortable: true,
+          pageable: true,
+          selectable: "row",
+          schema:
+          {
+              model:
+              {
+                  fields:
+                  {
+                      UserID: { type: "number" },
+                      Username: { type: "string" },
+                      Mobile: { type: "string" }
+                  }
+              }
+          },
+          autoBind: true,
+          columns: [
+                      { field: 'UserID', title: 'ID', width: 20 },
+                      { field: 'Username', title: 'User name', width: 100 },
+                      { field: 'Mobile', title: 'Mobile', width: 100 }
+          ],
+          change: function (e) {
+
+              // We received the data, now bind it to the view.
+              selectedUser = this.dataItem(this.select());
+              kendo.bind($("#view"), selectedUser);             
+          }
+      });
+
+    });
+
+
+    function updateUser() {
+        var UserID = selectedUser.UserID;
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/Person")";
+
+        // Cannot directly use selectedUser - something about the Roles collections breaks the serializing/deserializing between JQuery/JSON/WebAPI
+        var DTOUser = { UserID: selectedUser.UserID, Username: selectedUser.Username, Mobile: selectedUser.Mobile };
+
+        $.ajax({
+               url: apiUrl,
+               type: 'PUT',
+               dataType: "application/json",
+               data: DTOUser, 
+               cache: false,
+               statusCode: {
+                   200: function (data) {
+                       // delete successful, lets refresh the grid.
+                       $("#userListGrid").data("kendoGrid").dataSource.read();
+                   }, // Successful DELETE
+                   404: function (data) {
+                       alert(apiUrl + " ... Not Found(404)");
+                   }, // 404 Not Found
+                   400: function (data) {
+                       alert("Error in webpage. (Bad Request 400)");
+                   } // 400 Bad Request
+               } // statusCode
+           }); // ajax call  
+       };
+    
+
+    function deleteUser() {
+        
+        var UserID = selectedUser.UserID;
+
+        var apiUrl = "@VirtualPathUtility.ToAbsolute("~/api/Person")/" + UserID;
+        
+            $.ajax({
+                url: apiUrl,
+                type: 'DELETE',
+                cache: false,
+                statusCode: {
+                    200: function (data) {
+                        // delete successful, lets refresh the grid.
+                        $("#userListGrid").data("kendoGrid").dataSource.read();
+                    }, // Successful DELETE
+                    404: function (data) {
+                        alert(apiUrl + " ... Not Found(404)");
+                    }, // 404 Not Found
+                    400: function (data) {
+                        alert("Error in webpage. (Bad Request 400)");
+                    } // 400 Bad Request
+                } // statusCode
+            }); // ajax call  
+        };
+
+
+
+</script>
